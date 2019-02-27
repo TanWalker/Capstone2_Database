@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jan 23, 2019 at 10:14 AM
--- Server version: 5.7.24-0ubuntu0.18.04.1
--- PHP Version: 7.2.10-0ubuntu0.18.04.1
+-- Generation Time: Feb 27, 2019 at 08:55 AM
+-- Server version: 5.7.25-0ubuntu0.18.04.2
+-- PHP Version: 7.2.15-0ubuntu0.18.04.1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -17,7 +17,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `swim`
+-- Database: `swim_tracker`
 --
 
 -- --------------------------------------------------------
@@ -100,6 +100,28 @@ CREATE TABLE `role` (
   `name` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+--
+-- Dumping data for table `role`
+--
+
+INSERT INTO `role` (`id`, `name`) VALUES
+(1, 'coach'),
+(2, 'admin');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `schedule`
+--
+
+CREATE TABLE `schedule` (
+  `id` int(11) NOT NULL,
+  `day` int(11) DEFAULT '1',
+  `month` int(11) DEFAULT '1',
+  `year` int(11) DEFAULT '2000',
+  `lesson_plan_id` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 -- --------------------------------------------------------
 
 --
@@ -108,7 +130,8 @@ CREATE TABLE `role` (
 
 CREATE TABLE `style` (
   `id` int(11) NOT NULL,
-  `swim_name` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL
+  `swim_name` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `description` text COLLATE utf8_unicode_ci
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -146,7 +169,7 @@ CREATE TABLE `user` (
   `id` int(11) NOT NULL,
   `role_id` int(11) NOT NULL,
   `username` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
-  `password` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
+  `password` text COLLATE utf8_unicode_ci NOT NULL,
   `first_name` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL,
   `last_name` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL,
   `dob` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -157,14 +180,27 @@ CREATE TABLE `user` (
   `parent_phone` char(10) COLLATE utf8_unicode_ci DEFAULT NULL,
   `gender` tinyint(1) DEFAULT NULL,
   `is_verified` tinyint(1) DEFAULT NULL,
-  `age` bit(1) DEFAULT NULL,
+  `age` int(1) DEFAULT NULL,
   `height` float DEFAULT NULL,
   `weight` float DEFAULT NULL,
   `avatar` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `slug` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `team_id` int(11) DEFAULT NULL,
+  `is_coach` tinyint(4) DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `user`
+--
+
+INSERT INTO `user` (`id`, `role_id`, `username`, `password`, `first_name`, `last_name`, `dob`, `phone`, `email`, `address`, `parent_name`, `parent_phone`, `gender`, `is_verified`, `age`, `height`, `weight`, `avatar`, `slug`, `created_at`, `updated_at`, `team_id`, `is_coach`) VALUES
+(3, 2, 'ocean', '$2b$10$qzcbh0CMK2z8lvmtvh5H7Oir75HHjHntUftKMtDMEiMsRmKogJ9xe', 'Duong', 'Le', '1997-02-21 00:00:00', NULL, 'ocean@enclave.vn', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', NULL, 0),
+(4, 2, 'walker', '$2b$10$yH9taDp2wl47An8Ce9tIDuZ4g5ZjfG.Fo.1d6jfltxyAm8PRXs2KS', 'Tan', 'Ho', '2019-02-25 07:32:08', NULL, 'walker@enclave.vn', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-02-04 17:00:00', '2019-02-11 17:00:00', NULL, 0),
+(5, 2, 'eddy', '$2b$10$LlL2dL2kluq5ZFjZShvZL.m7rpg4heWFvHAWYHXdkhThrt36rgEuC', 'Anh', 'Nguyen', '1997-02-21 00:00:00', NULL, 'eddy@enclave.vn', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', NULL, 0),
+(8, 2, 'triton', '$2b$10$f0nI.KebYOJHszSF1a1oTuxsJyoihoNuI8AJVwaK.k3AF91PuPopW', 'Tri', 'Nguyen', '1997-02-21 00:00:00', NULL, 'triton@enclave.vn', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', NULL, 0),
+(9, 2, 'kaizer', '$2b$10$y8xIjnyO5y1WFCObR3e4IuXdwaSutW8DOT66HWsQwHmcHVmk8JR2W', 'Khoa', 'Pham', '1997-02-21 00:00:00', NULL, 'kaizer@enclave.vn', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', NULL, 0);
 
 --
 -- Indexes for dumped tables
@@ -210,6 +246,12 @@ ALTER TABLE `record`
 -- Indexes for table `role`
 --
 ALTER TABLE `role`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `schedule`
+--
+ALTER TABLE `schedule`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -272,6 +314,11 @@ ALTER TABLE `record`
 -- AUTO_INCREMENT for table `role`
 --
 ALTER TABLE `role`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+--
+-- AUTO_INCREMENT for table `schedule`
+--
+ALTER TABLE `schedule`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `style`
@@ -292,40 +339,7 @@ ALTER TABLE `team-swimmer`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
--- Constraints for dumped tables
---
-
---
--- Constraints for table `lesson_plan`
---
-ALTER TABLE `lesson_plan`
-  ADD CONSTRAINT `lesson_plan_ibfk_1` FOREIGN KEY (`style_id`) REFERENCES `style` (`id`),
-  ADD CONSTRAINT `lesson_plan_ibfk_2` FOREIGN KEY (`distance_id`) REFERENCES `distance` (`id`);
-
---
--- Constraints for table `record`
---
-ALTER TABLE `record`
-  ADD CONSTRAINT `record_ibfk_1` FOREIGN KEY (`style_id`) REFERENCES `style` (`id`),
-  ADD CONSTRAINT `record_ibfk_2` FOREIGN KEY (`distance_id`) REFERENCES `distance` (`id`),
-  ADD CONSTRAINT `record_ibfk_3` FOREIGN KEY (`date_id`) REFERENCES `date` (`id`),
-  ADD CONSTRAINT `record_ibfk_4` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
-
---
--- Constraints for table `team-swimmer`
---
-ALTER TABLE `team-swimmer`
-  ADD CONSTRAINT `team-swimmer_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
-  ADD CONSTRAINT `team-swimmer_ibfk_2` FOREIGN KEY (`team_id`) REFERENCES `team` (`id`);
-
---
--- Constraints for table `user`
---
-ALTER TABLE `user`
-  ADD CONSTRAINT `user_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`);
-
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
