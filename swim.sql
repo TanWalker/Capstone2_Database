@@ -59,7 +59,14 @@ CREATE TABLE `distance` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
-
+INSERT into `distance` ( `swim_distance`) VALUES ( 1500);
+INSERT into `distance` ( `swim_distance`) VALUES ( 150);
+INSERT into `distance` ( `swim_distance`) VALUES ( 200);
+INSERT into `distance` ( `swim_distance`) VALUES ( 300);
+INSERT into `distance` ( `swim_distance`) VALUES ( 180);
+INSERT into `distance` ( `swim_distance`) VALUES ( 250);
+INSERT into `distance` ( `swim_distance`) VALUES ( 360);
+INSERT into `distance` ( `swim_distance`) VALUES ( 1000);
 --
 -- Table structure for table `exercise`
 --
