@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 04, 2019 at 07:56 AM
+-- Generation Time: Mar 05, 2019 at 08:33 AM
 -- Server version: 10.1.38-MariaDB
 -- PHP Version: 7.3.2
 
@@ -58,6 +58,20 @@ CREATE TABLE `distance` (
   `swim_distance` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+--
+-- Dumping data for table `distance`
+--
+
+INSERT INTO `distance` (`id`, `swim_distance`) VALUES
+(1, 1500),
+(2, 150),
+(3, 200),
+(4, 300),
+(5, 180),
+(6, 250),
+(7, 360),
+(8, 1000);
+
 -- --------------------------------------------------------
 
 --
@@ -67,34 +81,10 @@ CREATE TABLE `distance` (
 CREATE TABLE `exercise` (
   `id` int(11) NOT NULL,
   `name` varchar(255) DEFAULT NULL,
-  `style_id` int(11) DEFAULT NULL,
+  `style` varchar(255) DEFAULT NULL,
   `distance` float DEFAULT NULL,
-  `reps` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `exercise_time`
---
-
-CREATE TABLE `exercise_time` (
-  `id` int(11) NOT NULL,
-  `start` float DEFAULT NULL,
-  `end` float DEFAULT NULL,
-  `exercise_id` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `lesson_plan`
---
-
-CREATE TABLE `lesson_plan` (
-  `id` int(11) NOT NULL,
-  `name` varchar(255) DEFAULT NULL,
-  `exercise_time_ids` text
+  `reps` int(11) DEFAULT NULL,
+  `coach_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -140,11 +130,14 @@ INSERT INTO `role` (`id`, `name`) VALUES
 
 CREATE TABLE `schedule` (
   `id` int(11) NOT NULL,
-  `day` int(11) DEFAULT '1',
-  `month` int(11) DEFAULT '1',
-  `year` int(11) DEFAULT '2000',
-  `lesson_plan_id` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `START` time DEFAULT NULL,
+  `END` time DEFAULT NULL,
+  `exercise_id` int(11) DEFAULT NULL,
+  `coach_id` int(11) DEFAULT NULL,
+  `day` int(11) DEFAULT NULL,
+  `month` int(11) DEFAULT NULL,
+  `year` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -182,6 +175,13 @@ CREATE TABLE `team` (
   `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `age` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `team`
+--
+
+INSERT INTO `team` (`id`, `coach_id`, `name`, `age`) VALUES
+(1, 5, 'a5', '15');
 
 -- --------------------------------------------------------
 
@@ -236,7 +236,17 @@ INSERT INTO `user` (`id`, `role_id`, `username`, `password`, `first_name`, `last
 (4, 2, 'walker', '$2b$10$yH9taDp2wl47An8Ce9tIDuZ4g5ZjfG.Fo.1d6jfltxyAm8PRXs2KS', 'Tan', 'Ho', '1997-02-21 14:00:00', NULL, 'walker@enclave.vn', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', NULL, 0),
 (5, 2, 'eddy', '$2a$10$AUZfXSH92y/rh7/ZfftnQ.mWDpYlZjI3v4isNnGZgIBPj/PPQ0y4S', 'Anh', 'Nguyen', '2019-02-25 06:28:05', NULL, 'eddy@enclave.vn', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', NULL, 0),
 (8, 2, 'triton', '$2b$10$f0nI.KebYOJHszSF1a1oTuxsJyoihoNuI8AJVwaK.k3AF91PuPopW', 'Tri', 'Nguyen', '1997-02-21 14:00:00', NULL, 'triton@enclave.vn', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', NULL, 0),
-(9, 2, 'kaizer', '$2b$10$y8xIjnyO5y1WFCObR3e4IuXdwaSutW8DOT66HWsQwHmcHVmk8JR2W', 'Khoa', 'Pham', '1997-02-21 14:00:00', NULL, 'kaizer@enclave.vn', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', NULL, 0);
+(9, 2, 'kaizer', '$2b$10$y8xIjnyO5y1WFCObR3e4IuXdwaSutW8DOT66HWsQwHmcHVmk8JR2W', 'Khoa', 'Pham', '1997-02-21 14:00:00', NULL, 'kaizer@enclave.vn', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', NULL, 0),
+(12, 3, 'QK5DN_13', '$2b$10$jWMZZ.j69HC/leCng6O6AeUnmpUd0v4.BhMh3omxIitgHbwq6V2p6', NULL, NULL, '2019-03-05 04:52:46', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0),
+(13, 3, 'QK5DN_12', '$2b$10$nFeQC582e.m1Jn/4i4W2k.edI/IQBX77aQAuRqRmi0JHFbGvIAhUO', NULL, NULL, '2019-03-05 04:52:46', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0),
+(14, 3, 'QK5DN_10', '$2b$10$uVlH0yOsy0l6DmuChjgShu72xz1p0cm4MlkJuK75SInZt1gjUyJ3C', NULL, NULL, '2019-03-05 04:52:46', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0),
+(15, 3, 'QK5DN_14', '$2b$10$KIk/bBSDr/kGD99QNOPmpeE66Kbj/jHgkYQXSsPN73/WVjICz8wTu', NULL, NULL, '2019-03-05 04:52:46', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0),
+(16, 3, 'QK5DN_16', '$2b$10$/BOggxIK0c9Z89qyrCA/We0Rctc34tct7KK11EJCZmEfMmoPg6O2q', NULL, NULL, '2019-03-05 04:52:46', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0),
+(17, 3, 'QK5DN_15', '$2b$10$FPBE5ZYFgQP9DMXwR4ds8OaAuiNv5bILFWCdU86cI.zMeuBkgTqYa', NULL, NULL, '2019-03-05 04:52:46', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0),
+(18, 3, 'QK5DN_17', '$2b$10$V06jkvU6FzZ5/o1ep/b06uAFtc4gRwQOBqIPRGSLLeK4XQ128TjvS', NULL, NULL, '2019-03-05 04:52:46', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0),
+(19, 3, 'QK5DN_11', '$2b$10$FFWLgHPGDjNWgI9PO23vleDUdd1CCjuXK0EW0M2HtRqrLZNs8QWZC', NULL, NULL, '2019-03-05 04:52:46', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0),
+(20, 3, 'QK5DN_18', '$2b$10$keFpm57Nt/eFIgiPwepmOuY.Rl1AwdC5vYp0xiHkd3esMjISYIuR.', NULL, NULL, '2019-03-05 04:52:47', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0),
+(21, 3, 'QK5DN_19', '$2b$10$/DGUvihO9NOnmO/XXrymrutglS0.XT9n9eXz/posAZL57eGDVCwUW', NULL, NULL, '2019-03-05 04:52:47', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0);
 
 --
 -- Triggers `user`
@@ -276,18 +286,6 @@ ALTER TABLE `distance`
 -- Indexes for table `exercise`
 --
 ALTER TABLE `exercise`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `exercise_time`
---
-ALTER TABLE `exercise_time`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `lesson_plan`
---
-ALTER TABLE `lesson_plan`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -359,24 +357,12 @@ ALTER TABLE `date`
 -- AUTO_INCREMENT for table `distance`
 --
 ALTER TABLE `distance`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `exercise`
 --
 ALTER TABLE `exercise`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `exercise_time`
---
-ALTER TABLE `exercise_time`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `lesson_plan`
---
-ALTER TABLE `lesson_plan`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
@@ -407,7 +393,7 @@ ALTER TABLE `style`
 -- AUTO_INCREMENT for table `team`
 --
 ALTER TABLE `team`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `team-swimmer`
@@ -419,24 +405,8 @@ ALTER TABLE `team-swimmer`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 COMMIT;
-
-INSERT into `distance` ( `swim_distance`) VALUES ( 1500);
-INSERT into `distance` ( `swim_distance`) VALUES ( 150);
-INSERT into `distance` ( `swim_distance`) VALUES ( 200);
-INSERT into `distance` ( `swim_distance`) VALUES ( 300);
-INSERT into `distance` ( `swim_distance`) VALUES ( 180);
-INSERT into `distance` ( `swim_distance`) VALUES ( 250);
-INSERT into `distance` ( `swim_distance`) VALUES ( 360);
-INSERT into `distance` ( `swim_distance`) VALUES ( 1000);
-ALTER TABLE `exercise` CHANGE `style_id` `style` varchar(255) NULL DEFAULT NULL;
-
-ALTER TABLE `exercise_time` CHANGE `start` `start` DATE NULL DEFAULT NULL, CHANGE `end` `end` DATE NULL DEFAULT NULL;
-
-ALTER TABLE `exercise` ADD `coach_id` INT NOT NULL AFTER `reps`;
-
-
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
