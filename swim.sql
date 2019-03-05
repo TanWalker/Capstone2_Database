@@ -59,14 +59,7 @@ CREATE TABLE `distance` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
-INSERT into `distance` ( `swim_distance`) VALUES ( 1500);
-INSERT into `distance` ( `swim_distance`) VALUES ( 150);
-INSERT into `distance` ( `swim_distance`) VALUES ( 200);
-INSERT into `distance` ( `swim_distance`) VALUES ( 300);
-INSERT into `distance` ( `swim_distance`) VALUES ( 180);
-INSERT into `distance` ( `swim_distance`) VALUES ( 250);
-INSERT into `distance` ( `swim_distance`) VALUES ( 360);
-INSERT into `distance` ( `swim_distance`) VALUES ( 1000);
+
 --
 -- Table structure for table `exercise`
 --
@@ -429,7 +422,14 @@ ALTER TABLE `user`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 COMMIT;
 
-
+INSERT into `distance` ( `swim_distance`) VALUES ( 1500);
+INSERT into `distance` ( `swim_distance`) VALUES ( 150);
+INSERT into `distance` ( `swim_distance`) VALUES ( 200);
+INSERT into `distance` ( `swim_distance`) VALUES ( 300);
+INSERT into `distance` ( `swim_distance`) VALUES ( 180);
+INSERT into `distance` ( `swim_distance`) VALUES ( 250);
+INSERT into `distance` ( `swim_distance`) VALUES ( 360);
+INSERT into `distance` ( `swim_distance`) VALUES ( 1000);
 ALTER TABLE `exercise` CHANGE `style_id` `style` varchar(255) NULL DEFAULT NULL;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
