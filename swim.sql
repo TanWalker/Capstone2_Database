@@ -418,3 +418,4 @@ ALTER TABLE `schedule` CHANGE `END` `end_hour` INT NULL DEFAULT NULL;
 ALTER TABLE `schedule` add `start_minute` int;
 ALTER TABLE `schedule` add `end_minute` int;
 ALTER TABLE style add coach_id int ;
+ALTER table `schedule` add `team_name` varchar(255);
