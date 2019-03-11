@@ -95,11 +95,17 @@ CREATE TABLE `exercise` (
 
 CREATE TABLE `record` (
   `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `date_id` int (11) NOT NULL,
+  `schedule_id` int(11) NOT NULL,
+  `min_time` int(11) NOT NULL,
+  `max_time` int(11) NOT NULL,
+  `min_hr` int(11) NOT NULL,
+  `max_hr` int(11) NOT NULL,
+  `heart_rate` int(11) NOT NULL,
+  `attitude` varchar(256) COLLATE utf8_unicode_ci NOT NULL,
   `time_swim` float NOT NULL,
-  `style_id` int(11) NOT NULL,
-  `distance_id` int(11) NOT NULL,
-  `date_id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL
+  `result` varchar(255) 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -236,18 +242,7 @@ INSERT INTO `user` (`id`, `role_id`, `username`, `password`, `first_name`, `last
 (4, 2, 'walker', '$2b$10$yH9taDp2wl47An8Ce9tIDuZ4g5ZjfG.Fo.1d6jfltxyAm8PRXs2KS', 'Tan', 'Ho', '1997-02-21 14:00:00', NULL, 'walker@enclave.vn', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', NULL, 0),
 (5, 2, 'eddy', '$2a$10$AUZfXSH92y/rh7/ZfftnQ.mWDpYlZjI3v4isNnGZgIBPj/PPQ0y4S', 'Anh', 'Nguyen', '2019-02-25 06:28:05', NULL, 'eddy@enclave.vn', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', NULL, 0),
 (8, 2, 'triton', '$2b$10$f0nI.KebYOJHszSF1a1oTuxsJyoihoNuI8AJVwaK.k3AF91PuPopW', 'Tri', 'Nguyen', '1997-02-21 14:00:00', NULL, 'triton@enclave.vn', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', NULL, 0),
-(9, 2, 'kaizer', '$2b$10$y8xIjnyO5y1WFCObR3e4IuXdwaSutW8DOT66HWsQwHmcHVmk8JR2W', 'Khoa', 'Pham', '1997-02-21 14:00:00', NULL, 'kaizer@enclave.vn', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', NULL, 0),
-(12, 3, 'QK5DN_13', '$2b$10$jWMZZ.j69HC/leCng6O6AeUnmpUd0v4.BhMh3omxIitgHbwq6V2p6', NULL, NULL, '2019-03-05 04:52:46', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0),
-(13, 3, 'QK5DN_12', '$2b$10$nFeQC582e.m1Jn/4i4W2k.edI/IQBX77aQAuRqRmi0JHFbGvIAhUO', NULL, NULL, '2019-03-05 04:52:46', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0),
-(14, 3, 'QK5DN_10', '$2b$10$uVlH0yOsy0l6DmuChjgShu72xz1p0cm4MlkJuK75SInZt1gjUyJ3C', NULL, NULL, '2019-03-05 04:52:46', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0),
-(15, 3, 'QK5DN_14', '$2b$10$KIk/bBSDr/kGD99QNOPmpeE66Kbj/jHgkYQXSsPN73/WVjICz8wTu', NULL, NULL, '2019-03-05 04:52:46', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0),
-(16, 3, 'QK5DN_16', '$2b$10$/BOggxIK0c9Z89qyrCA/We0Rctc34tct7KK11EJCZmEfMmoPg6O2q', NULL, NULL, '2019-03-05 04:52:46', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0),
-(17, 3, 'QK5DN_15', '$2b$10$FPBE5ZYFgQP9DMXwR4ds8OaAuiNv5bILFWCdU86cI.zMeuBkgTqYa', NULL, NULL, '2019-03-05 04:52:46', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0),
-(18, 3, 'QK5DN_17', '$2b$10$V06jkvU6FzZ5/o1ep/b06uAFtc4gRwQOBqIPRGSLLeK4XQ128TjvS', NULL, NULL, '2019-03-05 04:52:46', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0),
-(19, 3, 'QK5DN_11', '$2b$10$FFWLgHPGDjNWgI9PO23vleDUdd1CCjuXK0EW0M2HtRqrLZNs8QWZC', NULL, NULL, '2019-03-05 04:52:46', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0),
-(20, 3, 'QK5DN_18', '$2b$10$keFpm57Nt/eFIgiPwepmOuY.Rl1AwdC5vYp0xiHkd3esMjISYIuR.', NULL, NULL, '2019-03-05 04:52:47', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0),
-(21, 3, 'QK5DN_19', '$2b$10$/DGUvihO9NOnmO/XXrymrutglS0.XT9n9eXz/posAZL57eGDVCwUW', NULL, NULL, '2019-03-05 04:52:47', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0);
-
+(9, 2, 'kaizer', '$2b$10$y8xIjnyO5y1WFCObR3e4IuXdwaSutW8DOT66HWsQwHmcHVmk8JR2W', 'Khoa', 'Pham', '1997-02-21 14:00:00', NULL, 'kaizer@enclave.vn', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', NULL, 0);
 --
 -- Triggers `user`
 --
@@ -293,8 +288,6 @@ ALTER TABLE `exercise`
 --
 ALTER TABLE `record`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `style_id` (`style_id`),
-  ADD KEY `distance_id` (`distance_id`),
   ADD KEY `date_id` (`date_id`),
   ADD KEY `user_id` (`user_id`);
 
