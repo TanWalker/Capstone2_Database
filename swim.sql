@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 05, 2019 at 08:33 AM
+-- Generation Time: Mar 14, 2019 at 02:52 AM
 -- Server version: 10.1.38-MariaDB
 -- PHP Version: 7.3.2
 
@@ -96,7 +96,7 @@ CREATE TABLE `exercise` (
 CREATE TABLE `record` (
   `id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
-  `date_id` int (11) NOT NULL,
+  `date_id` int(11) NOT NULL,
   `schedule_id` int(11) NOT NULL,
   `min_time` int(11) NOT NULL,
   `max_time` int(11) NOT NULL,
@@ -105,7 +105,7 @@ CREATE TABLE `record` (
   `heart_rate` int(11) NOT NULL,
   `attitude` varchar(256) COLLATE utf8_unicode_ci NOT NULL,
   `time_swim` float NOT NULL,
-  `result` varchar(255) 
+  `result` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -136,13 +136,16 @@ INSERT INTO `role` (`id`, `name`) VALUES
 
 CREATE TABLE `schedule` (
   `id` int(11) NOT NULL,
-  `START` time DEFAULT NULL,
-  `END` time DEFAULT NULL,
+  `start_hour` int(11) DEFAULT NULL,
+  `end_hour` int(11) DEFAULT NULL,
   `exercise_id` int(11) DEFAULT NULL,
   `coach_id` int(11) DEFAULT NULL,
   `day` int(11) DEFAULT NULL,
   `month` int(11) DEFAULT NULL,
-  `year` int(11) DEFAULT NULL
+  `year` int(11) DEFAULT NULL,
+  `start_minute` int(11) DEFAULT NULL,
+  `end_minute` int(11) DEFAULT NULL,
+  `team_name` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -154,20 +157,21 @@ CREATE TABLE `schedule` (
 CREATE TABLE `style` (
   `id` int(11) NOT NULL,
   `swim_name` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `description` text COLLATE utf8_unicode_ci
+  `description` text COLLATE utf8_unicode_ci,
+  `coach_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `style`
 --
 
-INSERT INTO `style` (`id`, `swim_name`, `description`) VALUES
-(1, 'Bơi sải', 'kiểu bơi nhanh nhất trong các kiểu bơi. Sử dụng 2 tay quạt liên tục so le về phía trước, gạt nước về phía sau làm động lực chính đưa cơ thể tiến lên.'),
-(2, 'Bơi ếch', 'kiểu bơi chậm nhất trong 4 kiểu bơi thể thao, là kiểu bơi có hình thức giống loài ếch bơi dưới nước.'),
-(3, 'Bơi ngửa', 'kiểu bơi có kỹ thuật khá tương tự với bơi trườn sấp nhưng tư thế cơ thể ngược lại, ngửa mặt lên trên.'),
-(4, 'Bơi bướm', 'kiểu bơi nhanh, đòi hỏi kỹ thuật và thể lực cao nhất vì phải kết hợp nhịp nhàng của toàn thân.'),
-(5, 'Bơi lượn sóng', 'kiểu bơi khép đôi chân lại bằng nhau. dùng lực của lưng nảy người sao cho phần ngực. mông, đôi chân diễn theo hình lượn sóng.'),
-(6, 'Bơi chó', 'kiểu bơi úp người, chân đạp giống như bơi sải, còn đôi tay thì để dưới ngực, 5 ngón tay có thể khép hoặc mở, đưa đôi tay về phía trước song song với ngực, rồi đẩy nước về phía sau song song với bụng, động tác lặp đi lặp lại nhiều lần, giống như hoạt động đôi chân trước của một chú chó đang bơi vậy.');
+INSERT INTO `style` (`id`, `swim_name`, `description`, `coach_id`) VALUES
+(1, 'Bơi sải', 'kiểu bơi nhanh nhất trong các kiểu bơi. Sử dụng 2 tay quạt liên tục so le về phía trước, gạt nước về phía sau làm động lực chính đưa cơ thể tiến lên.', NULL),
+(2, 'Bơi ếch', 'kiểu bơi chậm nhất trong 4 kiểu bơi thể thao, là kiểu bơi có hình thức giống loài ếch bơi dưới nước.', NULL),
+(3, 'Bơi ngửa', 'kiểu bơi có kỹ thuật khá tương tự với bơi trườn sấp nhưng tư thế cơ thể ngược lại, ngửa mặt lên trên.', NULL),
+(4, 'Bơi bướm', 'kiểu bơi nhanh, đòi hỏi kỹ thuật và thể lực cao nhất vì phải kết hợp nhịp nhàng của toàn thân.', NULL),
+(5, 'Bơi lượn sóng', 'kiểu bơi khép đôi chân lại bằng nhau. dùng lực của lưng nảy người sao cho phần ngực. mông, đôi chân diễn theo hình lượn sóng.', NULL),
+(6, 'Bơi chó', 'kiểu bơi úp người, chân đạp giống như bơi sải, còn đôi tay thì để dưới ngực, 5 ngón tay có thể khép hoặc mở, đưa đôi tay về phía trước song song với ngực, rồi đẩy nước về phía sau song song với bụng, động tác lặp đi lặp lại nhiều lần, giống như hoạt động đôi chân trước của một chú chó đang bơi vậy.', NULL);
 
 -- --------------------------------------------------------
 
@@ -181,13 +185,6 @@ CREATE TABLE `team` (
   `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `age` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
---
--- Dumping data for table `team`
---
-
-INSERT INTO `team` (`id`, `coach_id`, `name`, `age`) VALUES
-(1, 5, 'a5', '15');
 
 -- --------------------------------------------------------
 
@@ -220,8 +217,8 @@ CREATE TABLE `user` (
   `address` varchar(225) COLLATE utf8_unicode_ci DEFAULT NULL,
   `parent_name` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL,
   `parent_phone` char(10) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `gender` tinyint(1) DEFAULT NULL,
-  `is_verified` tinyint(1) DEFAULT NULL,
+  `gender` tinyint(1) DEFAULT '0',
+  `is_verified` tinyint(1) DEFAULT '0',
   `age` int(1) DEFAULT NULL,
   `height` float DEFAULT NULL,
   `weight` float DEFAULT NULL,
@@ -230,19 +227,21 @@ CREATE TABLE `user` (
   `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `team_id` int(11) DEFAULT NULL,
-  `is_coach` tinyint(4) DEFAULT '0'
+  `is_coach` tinyint(4) DEFAULT '0',
+  `display_name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`id`, `role_id`, `username`, `password`, `first_name`, `last_name`, `dob`, `phone`, `email`, `address`, `parent_name`, `parent_phone`, `gender`, `is_verified`, `age`, `height`, `weight`, `avatar`, `slug`, `created_at`, `updated_at`, `team_id`, `is_coach`) VALUES
-(3, 2, 'ocean', '$2b$10$qzcbh0CMK2z8lvmtvh5H7Oir75HHjHntUftKMtDMEiMsRmKogJ9xe', 'Duong', 'Le', '1997-02-21 14:00:00', NULL, 'ocean@enclave.vn', NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', NULL, 0),
-(4, 2, 'walker', '$2b$10$yH9taDp2wl47An8Ce9tIDuZ4g5ZjfG.Fo.1d6jfltxyAm8PRXs2KS', 'Tan', 'Ho', '1997-02-21 14:00:00', NULL, 'walker@enclave.vn', NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', NULL, 0),
-(5, 2, 'eddy', '$2a$10$AUZfXSH92y/rh7/ZfftnQ.mWDpYlZjI3v4isNnGZgIBPj/PPQ0y4S', 'Anh', 'Nguyen', '2019-02-25 06:28:05', NULL, 'eddy@enclave.vn', NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', NULL, 0),
-(8, 2, 'triton', '$2b$10$f0nI.KebYOJHszSF1a1oTuxsJyoihoNuI8AJVwaK.k3AF91PuPopW', 'Tri', 'Nguyen', '1997-02-21 14:00:00', NULL, 'triton@enclave.vn', NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', NULL, 0),
-(9, 2, 'kaizer', '$2b$10$y8xIjnyO5y1WFCObR3e4IuXdwaSutW8DOT66HWsQwHmcHVmk8JR2W', 'Khoa', 'Pham', '1997-02-21 14:00:00', NULL, 'kaizer@enclave.vn', NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', NULL, 0);
+INSERT INTO `user` (`id`, `role_id`, `username`, `password`, `first_name`, `last_name`, `dob`, `phone`, `email`, `address`, `parent_name`, `parent_phone`, `gender`, `is_verified`, `age`, `height`, `weight`, `avatar`, `slug`, `created_at`, `updated_at`, `team_id`, `is_coach`, `display_name`) VALUES
+(3, 2, 'ocean', '$2b$10$qzcbh0CMK2z8lvmtvh5H7Oir75HHjHntUftKMtDMEiMsRmKogJ9xe', 'Dương', 'Lê Đại', '1997-08-23 00:00:00', '0121549693', 'ocean@enclave.vn', NULL, NULL, NULL, 0, 1, NULL, 175, 80, 'https://ucarecdn.com/1c922eab-4545-4570-a580-db6fed2009e5/', NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', NULL, 0, NULL),
+(4, 2, 'walker', '$2b$10$yH9taDp2wl47An8Ce9tIDuZ4g5ZjfG.Fo.1d6jfltxyAm8PRXs2KS', 'Tan', 'Ho', '1997-02-21 14:00:00', NULL, 'walker@enclave.vn', NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', NULL, 0, NULL),
+(5, 2, 'eddy', '$2a$10$AUZfXSH92y/rh7/ZfftnQ.mWDpYlZjI3v4isNnGZgIBPj/PPQ0y4S', 'Ánh', 'Nguyễn Đắc', '1997-10-19 00:00:00', '0932549693', 'eddy@enclave.vn', NULL, NULL, NULL, 0, 1, NULL, 178, 65, 'https://ucarecdn.com/657fdc37-8193-4616-b195-ddaa7c95d70c/', NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', NULL, 0, 'Nguyễn Đắc Ánh'),
+(8, 2, 'triton', '$2b$10$f0nI.KebYOJHszSF1a1oTuxsJyoihoNuI8AJVwaK.k3AF91PuPopW', 'Tri', 'Nguyen', '2019-03-14 01:50:38', '2', 'triton@enclave.vn', NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', NULL, 0, 'Nguyen Tri'),
+(9, 2, 'kaizer', '$2b$10$y8xIjnyO5y1WFCObR3e4IuXdwaSutW8DOT66HWsQwHmcHVmk8JR2W', 'Khoa', 'Phạm', '1997-08-15 00:00:00', '0123456', 'kaizer@enclave.vn', NULL, NULL, NULL, 0, 1, NULL, 170, 67, 'https://ucarecdn.com/bd0f2fed-2f50-462c-adc6-0b5bac345cf9/', NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', NULL, 0, NULL);
+
 --
 -- Triggers `user`
 --
@@ -252,6 +251,12 @@ CREATE TRIGGER `after_insert_user` AFTER INSERT ON `user` FOR EACH ROW BEGIN
        INSERT INTO `team-swimmer` (user_id , team_id)  VALUES( NEW.id ,NEW.team_id);
       END IF;
     END
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `before_update_user` BEFORE UPDATE ON `user` FOR EACH ROW BEGIN
+   set NEW.display_name =  CONCAT(NEW.last_name, " ",NEW.first_name) ;
+END
 $$
 DELIMITER ;
 
@@ -380,13 +385,13 @@ ALTER TABLE `schedule`
 -- AUTO_INCREMENT for table `style`
 --
 ALTER TABLE `style`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `team`
 --
 ALTER TABLE `team`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `team-swimmer`
@@ -398,20 +403,9 @@ ALTER TABLE `team-swimmer`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-
-
-ALTER TABLE `schedule` CHANGE `START` `start_hour` INT NULL DEFAULT NULL;
-ALTER TABLE `schedule` CHANGE `END` `end_hour` INT NULL DEFAULT NULL;
-ALTER TABLE `schedule` add `start_minute` int;
-ALTER TABLE `schedule` add `end_minute` int;
-ALTER TABLE style add coach_id int ;
-ALTER table `schedule` add `team_name` varchar(255);
-
-ALTER TABLE `user` CHANGE `gender` `gender` TINYINT(1) NULL DEFAULT '0';
-ALTER TABLE `user` CHANGE `is_verified` `is_verified` TINYINT(1) NULL DEFAULT '0';
