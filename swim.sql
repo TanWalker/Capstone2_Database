@@ -414,3 +414,4 @@ ALTER table `schedule` add time_start datetime;
 ALTER table `user` add bmi float ;
 ALTER TABLE `user` add endurance float;
 ALTER TABLE `user` add speed float; 
+ALTER TABLE `schedule` add team_id int;
