@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 15, 2019 at 08:43 AM
+-- Generation Time: Mar 15, 2019 at 10:18 AM
 -- Server version: 10.1.38-MariaDB
 -- PHP Version: 7.3.2
 
@@ -214,18 +214,19 @@ CREATE TABLE `team-swimmer` (
 CREATE TABLE `type_of_exercise` (
   `id` int(11) NOT NULL,
   `name` varchar(255) DEFAULT NULL,
-  `description` varchar(255) DEFAULT NULL
+  `description` varchar(255) DEFAULT NULL,
+  `logo` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `type_of_exercise`
 --
 
-INSERT INTO `type_of_exercise` (`id`, `name`, `description`) VALUES
-(1, 'Warm up', NULL),
-(2, 'Main Stroke', NULL),
-(3, 'Final set', NULL),
-(4, 'Swim down', NULL);
+INSERT INTO `type_of_exercise` (`id`, `name`, `description`, `logo`) VALUES
+(1, 'Warm up', NULL, 'https://www.fitfor90.com/hs-fs/hubfs/Fitfor90_April2016/images/icon-warmup.png?width=250&height=250&name=icon-warmup.png'),
+(2, 'Main Stroke', NULL, 'http://www.oogazone.com/wp-content/uploads/2018/10/best-swimming-clipart-petition-pictures.jpg'),
+(3, 'Final set', NULL, 'http://www2.len.eu/wp-content/uploads/2016/04/openwater.png?v=2.0'),
+(4, 'Swim down', NULL, 'http://www2.len.eu/wp-content/uploads/2016/04/synchro.png?v=2.0');
 
 -- --------------------------------------------------------
 
@@ -399,7 +400,7 @@ ALTER TABLE `distance`
 -- AUTO_INCREMENT for table `exercise`
 --
 ALTER TABLE `exercise`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `record`
@@ -453,4 +454,3 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-ALTER TABLE `type_of_exercise` add logo varchar(255);
