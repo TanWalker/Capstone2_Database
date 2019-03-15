@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 15, 2019 at 08:39 AM
+-- Generation Time: Mar 15, 2019 at 08:43 AM
 -- Server version: 10.1.38-MariaDB
 -- PHP Version: 7.3.2
 
@@ -216,6 +216,16 @@ CREATE TABLE `type_of_exercise` (
   `name` varchar(255) DEFAULT NULL,
   `description` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `type_of_exercise`
+--
+
+INSERT INTO `type_of_exercise` (`id`, `name`, `description`) VALUES
+(1, 'Warm up', NULL),
+(2, 'Main Stroke', NULL),
+(3, 'Final set', NULL),
+(4, 'Swim down', NULL);
 
 -- --------------------------------------------------------
 
@@ -431,7 +441,7 @@ ALTER TABLE `team-swimmer`
 -- AUTO_INCREMENT for table `type_of_exercise`
 --
 ALTER TABLE `type_of_exercise`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `user`
