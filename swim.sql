@@ -411,3 +411,6 @@ COMMIT;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 ALTER table `schedule` add time_end datetime;
 ALTER table `schedule` add time_start datetime;
+ALTER table `user` add bmi float ;
+ALTER TABLE `user` add endurance float;
+ALTER TABLE `user` add speed float; 
