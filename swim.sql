@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 14, 2019 at 02:52 AM
+-- Generation Time: Mar 15, 2019 at 08:39 AM
 -- Server version: 10.1.38-MariaDB
 -- PHP Version: 7.3.2
 
@@ -84,7 +84,10 @@ CREATE TABLE `exercise` (
   `style` varchar(255) DEFAULT NULL,
   `distance` float DEFAULT NULL,
   `reps` int(11) DEFAULT NULL,
-  `coach_id` int(11) NOT NULL
+  `coach_id` int(11) NOT NULL,
+  `time` int(11) DEFAULT NULL,
+  `description` text,
+  `type_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -145,7 +148,11 @@ CREATE TABLE `schedule` (
   `year` int(11) DEFAULT NULL,
   `start_minute` int(11) DEFAULT NULL,
   `end_minute` int(11) DEFAULT NULL,
-  `team_name` varchar(255) DEFAULT NULL
+  `team_name` varchar(255) DEFAULT NULL,
+  `time_start` datetime DEFAULT NULL,
+  `time_end` datetime DEFAULT NULL,
+  `team_id` int(11) DEFAULT NULL,
+  `exercise_name` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -201,6 +208,18 @@ CREATE TABLE `team-swimmer` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `type_of_exercise`
+--
+
+CREATE TABLE `type_of_exercise` (
+  `id` int(11) NOT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `description` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `user`
 --
 
@@ -228,19 +247,22 @@ CREATE TABLE `user` (
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `team_id` int(11) DEFAULT NULL,
   `is_coach` tinyint(4) DEFAULT '0',
-  `display_name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL
+  `display_name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `bmi` float DEFAULT NULL,
+  `endurance` float DEFAULT NULL,
+  `speed` float DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`id`, `role_id`, `username`, `password`, `first_name`, `last_name`, `dob`, `phone`, `email`, `address`, `parent_name`, `parent_phone`, `gender`, `is_verified`, `age`, `height`, `weight`, `avatar`, `slug`, `created_at`, `updated_at`, `team_id`, `is_coach`, `display_name`) VALUES
-(3, 2, 'ocean', '$2b$10$qzcbh0CMK2z8lvmtvh5H7Oir75HHjHntUftKMtDMEiMsRmKogJ9xe', 'Dương', 'Lê Đại', '1997-08-23 00:00:00', '0121549693', 'ocean@enclave.vn', NULL, NULL, NULL, 0, 1, NULL, 175, 80, 'https://ucarecdn.com/1c922eab-4545-4570-a580-db6fed2009e5/', NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', NULL, 0, NULL),
-(4, 2, 'walker', '$2b$10$yH9taDp2wl47An8Ce9tIDuZ4g5ZjfG.Fo.1d6jfltxyAm8PRXs2KS', 'Tan', 'Ho', '1997-02-21 14:00:00', NULL, 'walker@enclave.vn', NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', NULL, 0, NULL),
-(5, 2, 'eddy', '$2a$10$AUZfXSH92y/rh7/ZfftnQ.mWDpYlZjI3v4isNnGZgIBPj/PPQ0y4S', 'Ánh', 'Nguyễn Đắc', '1997-10-19 00:00:00', '0932549693', 'eddy@enclave.vn', NULL, NULL, NULL, 0, 1, NULL, 178, 65, 'https://ucarecdn.com/657fdc37-8193-4616-b195-ddaa7c95d70c/', NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', NULL, 0, 'Nguyễn Đắc Ánh'),
-(8, 2, 'triton', '$2b$10$f0nI.KebYOJHszSF1a1oTuxsJyoihoNuI8AJVwaK.k3AF91PuPopW', 'Tri', 'Nguyen', '2019-03-14 01:50:38', '2', 'triton@enclave.vn', NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', NULL, 0, 'Nguyen Tri'),
-(9, 2, 'kaizer', '$2b$10$y8xIjnyO5y1WFCObR3e4IuXdwaSutW8DOT66HWsQwHmcHVmk8JR2W', 'Khoa', 'Phạm', '1997-08-15 00:00:00', '0123456', 'kaizer@enclave.vn', NULL, NULL, NULL, 0, 1, NULL, 170, 67, 'https://ucarecdn.com/bd0f2fed-2f50-462c-adc6-0b5bac345cf9/', NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', NULL, 0, NULL);
+INSERT INTO `user` (`id`, `role_id`, `username`, `password`, `first_name`, `last_name`, `dob`, `phone`, `email`, `address`, `parent_name`, `parent_phone`, `gender`, `is_verified`, `age`, `height`, `weight`, `avatar`, `slug`, `created_at`, `updated_at`, `team_id`, `is_coach`, `display_name`, `bmi`, `endurance`, `speed`) VALUES
+(3, 2, 'ocean', '$2b$10$qzcbh0CMK2z8lvmtvh5H7Oir75HHjHntUftKMtDMEiMsRmKogJ9xe', 'Dương', 'Lê Đại', '1997-08-23 00:00:00', '0121549693', 'ocean@enclave.vn', NULL, NULL, NULL, 0, 1, NULL, 175, 80, 'https://ucarecdn.com/1c922eab-4545-4570-a580-db6fed2009e5/', NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', NULL, 0, NULL, NULL, NULL, NULL),
+(4, 2, 'walker', '$2b$10$yH9taDp2wl47An8Ce9tIDuZ4g5ZjfG.Fo.1d6jfltxyAm8PRXs2KS', 'Tan', 'Ho', '1997-02-21 14:00:00', NULL, 'walker@enclave.vn', NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', NULL, 0, NULL, NULL, NULL, NULL),
+(5, 2, 'eddy', '$2a$10$AUZfXSH92y/rh7/ZfftnQ.mWDpYlZjI3v4isNnGZgIBPj/PPQ0y4S', 'Ánh', 'Nguyễn Đắc', '1997-10-19 00:00:00', '0932549693', 'eddy@enclave.vn', NULL, NULL, NULL, 0, 1, NULL, 178, 65, 'https://ucarecdn.com/657fdc37-8193-4616-b195-ddaa7c95d70c/', NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', NULL, 0, 'Nguyễn Đắc Ánh', NULL, NULL, NULL),
+(8, 2, 'triton', '$2b$10$f0nI.KebYOJHszSF1a1oTuxsJyoihoNuI8AJVwaK.k3AF91PuPopW', 'Tri', 'Nguyen', '2019-03-14 01:50:38', '2', 'triton@enclave.vn', NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', NULL, 0, 'Nguyen Tri', NULL, NULL, NULL),
+(9, 2, 'kaizer', '$2b$10$y8xIjnyO5y1WFCObR3e4IuXdwaSutW8DOT66HWsQwHmcHVmk8JR2W', 'Khoa', 'Phạm', '1997-08-15 00:00:00', '0123456', 'kaizer@enclave.vn', NULL, NULL, NULL, 0, 1, NULL, 170, 67, 'https://ucarecdn.com/bd0f2fed-2f50-462c-adc6-0b5bac345cf9/', NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', NULL, 0, NULL, NULL, NULL, NULL);
 
 --
 -- Triggers `user`
@@ -329,6 +351,12 @@ ALTER TABLE `team-swimmer`
   ADD KEY `team_id` (`team_id`);
 
 --
+-- Indexes for table `type_of_exercise`
+--
+ALTER TABLE `type_of_exercise`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `user`
 --
 ALTER TABLE `user`
@@ -361,7 +389,7 @@ ALTER TABLE `distance`
 -- AUTO_INCREMENT for table `exercise`
 --
 ALTER TABLE `exercise`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `record`
@@ -379,7 +407,7 @@ ALTER TABLE `role`
 -- AUTO_INCREMENT for table `schedule`
 --
 ALTER TABLE `schedule`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT for table `style`
@@ -391,7 +419,7 @@ ALTER TABLE `style`
 -- AUTO_INCREMENT for table `team`
 --
 ALTER TABLE `team`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `team-swimmer`
@@ -400,19 +428,18 @@ ALTER TABLE `team-swimmer`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `type_of_exercise`
+--
+ALTER TABLE `type_of_exercise`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-ALTER table `schedule` add time_end datetime;
-ALTER table `schedule` add time_start datetime;
-ALTER table `user` add bmi float ;
-ALTER TABLE `user` add endurance float;
-ALTER TABLE `user` add speed float; 
-ALTER TABLE `schedule` add team_id int;
-ALTER TABLE `schedule` add exercise_name varchar(255);
