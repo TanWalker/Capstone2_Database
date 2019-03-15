@@ -415,3 +415,4 @@ ALTER table `user` add bmi float ;
 ALTER TABLE `user` add endurance float;
 ALTER TABLE `user` add speed float; 
 ALTER TABLE `schedule` add team_id int;
+ALTER TABLE `schedule` add exercise_name varchar(255);
