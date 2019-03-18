@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 15, 2019 at 10:18 AM
+-- Generation Time: Mar 18, 2019 at 05:36 AM
 -- Server version: 10.1.38-MariaDB
 -- PHP Version: 7.3.2
 
@@ -108,7 +108,11 @@ CREATE TABLE `record` (
   `heart_rate` int(11) NOT NULL,
   `attitude` varchar(256) COLLATE utf8_unicode_ci NOT NULL,
   `time_swim` float NOT NULL,
-  `result` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL
+  `result` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `note` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `best_result` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `errors` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `coach_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -293,6 +297,20 @@ END
 $$
 DELIMITER ;
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `version`
+--
+
+CREATE TABLE `version` (
+  `id` int(11) NOT NULL,
+  `front_version` varchar(100) DEFAULT NULL,
+  `back_version` varchar(100) DEFAULT NULL,
+  `description` varchar(100) DEFAULT NULL,
+  `name` varchar(100) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 --
 -- Indexes for dumped tables
 --
@@ -375,6 +393,12 @@ ALTER TABLE `user`
   ADD KEY `role_id` (`role_id`);
 
 --
+-- Indexes for table `version`
+--
+ALTER TABLE `version`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -400,7 +424,7 @@ ALTER TABLE `distance`
 -- AUTO_INCREMENT for table `exercise`
 --
 ALTER TABLE `exercise`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `record`
@@ -418,7 +442,7 @@ ALTER TABLE `role`
 -- AUTO_INCREMENT for table `schedule`
 --
 ALTER TABLE `schedule`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `style`
@@ -430,7 +454,7 @@ ALTER TABLE `style`
 -- AUTO_INCREMENT for table `team`
 --
 ALTER TABLE `team`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `team-swimmer`
@@ -448,7 +472,13 @@ ALTER TABLE `type_of_exercise`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- AUTO_INCREMENT for table `version`
+--
+ALTER TABLE `version`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
