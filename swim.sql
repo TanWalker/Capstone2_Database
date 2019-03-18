@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 18, 2019 at 05:36 AM
+-- Generation Time: Mar 18, 2019 at 09:44 AM
 -- Server version: 10.1.38-MariaDB
 -- PHP Version: 7.3.2
 
@@ -90,6 +90,44 @@ CREATE TABLE `exercise` (
   `type_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Dumping data for table `exercise`
+--
+
+INSERT INTO `exercise` (`id`, `name`, `style`, `distance`, `reps`, `coach_id`, `time`, `description`, `type_id`) VALUES
+(10, 'Khởi động nhẹ', 'Bơi ếch', 300, 5, 5, 30, 'abc-xyz', 1),
+(11, 'Main stroke 1', 'Bơi chó', 180, 10, 5, 30, 'Bơi gì gì đó', 2),
+(12, 'Final set 1', 'Bơi lượn sóng', 250, 10, 5, 10, 'bơi lượn sóng 1', 3),
+(13, 'tập thở', 'Bơi bướm', 250, 10, 5, 10, 'abcxyz', 4);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `lesson`
+--
+
+CREATE TABLE `lesson` (
+  `id` int(11) NOT NULL,
+  `coach_id` int(11) DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `lesson_exercise`
+--
+
+CREATE TABLE `lesson_exercise` (
+  `id` int(11) NOT NULL,
+  `lesson_id` int(11) DEFAULT NULL,
+  `exercise_id` int(11) DEFAULT NULL,
+  `type_of_exercise_id` int(11) DEFAULT NULL,
+  `is_important` bit(1) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 -- --------------------------------------------------------
 
 --
@@ -159,6 +197,13 @@ CREATE TABLE `schedule` (
   `exercise_name` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Dumping data for table `schedule`
+--
+
+INSERT INTO `schedule` (`id`, `start_hour`, `end_hour`, `exercise_id`, `coach_id`, `day`, `month`, `year`, `start_minute`, `end_minute`, `team_name`, `time_start`, `time_end`, `team_id`, `exercise_name`) VALUES
+(1, 8, 9, 11, 5, 19, 3, 2019, 0, 0, 'Eddy', '2019-03-19 01:00:00', '2019-03-19 02:00:00', 1, 'Khởi động nhẹ');
+
 -- --------------------------------------------------------
 
 --
@@ -196,6 +241,13 @@ CREATE TABLE `team` (
   `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `age` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `team`
+--
+
+INSERT INTO `team` (`id`, `coach_id`, `name`, `age`) VALUES
+(1, 5, 'Eddy', '15');
 
 -- --------------------------------------------------------
 
@@ -277,7 +329,17 @@ INSERT INTO `user` (`id`, `role_id`, `username`, `password`, `first_name`, `last
 (4, 2, 'walker', '$2b$10$yH9taDp2wl47An8Ce9tIDuZ4g5ZjfG.Fo.1d6jfltxyAm8PRXs2KS', 'Tan', 'Ho', '1997-02-21 14:00:00', NULL, 'walker@enclave.vn', NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', NULL, 0, NULL, NULL, NULL, NULL),
 (5, 2, 'eddy', '$2a$10$AUZfXSH92y/rh7/ZfftnQ.mWDpYlZjI3v4isNnGZgIBPj/PPQ0y4S', 'Ánh', 'Nguyễn Đắc', '1997-10-19 00:00:00', '0932549693', 'eddy@enclave.vn', NULL, NULL, NULL, 0, 1, NULL, 178, 65, 'https://ucarecdn.com/657fdc37-8193-4616-b195-ddaa7c95d70c/', NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', NULL, 0, 'Nguyễn Đắc Ánh', NULL, NULL, NULL),
 (8, 2, 'triton', '$2b$10$f0nI.KebYOJHszSF1a1oTuxsJyoihoNuI8AJVwaK.k3AF91PuPopW', 'Tri', 'Nguyen', '2019-03-14 01:50:38', '2', 'triton@enclave.vn', NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', NULL, 0, 'Nguyen Tri', NULL, NULL, NULL),
-(9, 2, 'kaizer', '$2b$10$y8xIjnyO5y1WFCObR3e4IuXdwaSutW8DOT66HWsQwHmcHVmk8JR2W', 'Khoa', 'Phạm', '1997-08-15 00:00:00', '0123456', 'kaizer@enclave.vn', NULL, NULL, NULL, 0, 1, NULL, 170, 67, 'https://ucarecdn.com/bd0f2fed-2f50-462c-adc6-0b5bac345cf9/', NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', NULL, 0, NULL, NULL, NULL, NULL);
+(9, 2, 'kaizer', '$2b$10$y8xIjnyO5y1WFCObR3e4IuXdwaSutW8DOT66HWsQwHmcHVmk8JR2W', 'Khoa', 'Phạm', '1997-08-15 00:00:00', '0123456', 'kaizer@enclave.vn', NULL, NULL, NULL, 0, 1, NULL, 170, 67, 'https://ucarecdn.com/bd0f2fed-2f50-462c-adc6-0b5bac345cf9/', NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', NULL, 0, NULL, NULL, NULL, NULL),
+(10, 3, 'QK5DN_10', '$2b$10$02jrJHaHont/aaglrF.P5.aKXvSg4S1a5jh/IetC9UQoA1wxaHnXi', NULL, NULL, '2019-03-18 07:20:36', NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, NULL, NULL, NULL, NULL),
+(11, 3, 'QK5DN_12', '$2b$10$YtKnupKnYspa/4rcvItpp..Hdo7R0THnB1AG/VOAB6BCJLVN7XZku', NULL, NULL, '2019-03-18 07:20:36', NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, NULL, NULL, NULL, NULL),
+(12, 3, 'QK5DN_14', '$2b$10$FKeAzhkISfo9iFGBjay6I.f0zUMfEr3YnyXUH993kCd3t.amHbk/.', NULL, NULL, '2019-03-18 07:20:36', NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, NULL, NULL, NULL, NULL),
+(13, 3, 'QK5DN_11', '$2b$10$wzVYTYvZnEV0yt69HEYXw.4Jdpg8FgGYM96XOK4BuRMVpdtMGGT9K', NULL, NULL, '2019-03-18 07:20:36', NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, NULL, NULL, NULL, NULL),
+(14, 3, 'QK5DN_16', '$2b$10$5eKJNOooTzh1bWTcbuerveB4U7JYc6uoZ1wJsq5VX2aMObyrIxXXi', NULL, NULL, '2019-03-18 07:20:36', NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, NULL, NULL, NULL, NULL),
+(15, 3, 'QK5DN_13', '$2b$10$EXdmDwycQEPWqraw6OvmT.8wF86PuDtr8YpNhjU79RTuoHs1DLRAK', NULL, NULL, '2019-03-18 07:20:36', NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, NULL, NULL, NULL, NULL),
+(16, 3, 'QK5DN_15', '$2b$10$T6DkWRee.oiLK3Iipd9bUe2GF7AR/MNmrUQVeGky8s8tFMce2zIoG', NULL, NULL, '2019-03-18 07:20:36', NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, NULL, NULL, NULL, NULL),
+(17, 3, 'QK5DN_17', '$2b$10$rW5.n8XwAi3meNPC5vexQO2eCbIUCycm5SeJKnR8KIRvQzF86WJ5i', NULL, NULL, '2019-03-18 07:20:36', NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, NULL, NULL, NULL, NULL),
+(18, 3, 'QK5DN_19', '$2b$10$acTJTkmli4nE8P8HZTkuxewfiuQ2xSq3OY2dw1iILHcGrLp3kepBm', NULL, NULL, '2019-03-18 07:20:36', NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, NULL, NULL, NULL, NULL),
+(19, 3, 'QK5DN_18', '$2b$10$hO66A.t3vEdX/DMkUYScqO1gdwlvgC3hFpnU2kWlFPQfk7J6WICpS', NULL, NULL, '2019-03-18 07:20:36', NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, NULL, NULL, NULL, NULL);
 
 --
 -- Triggers `user`
@@ -312,6 +374,13 @@ CREATE TABLE `version` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
+-- Dumping data for table `version`
+--
+
+INSERT INTO `version` (`id`, `front_version`, `back_version`, `description`, `name`) VALUES
+(1, '0.1.6', '0.1.7', ' Hiện đang trong giai đoạn thử nghiệm và phát triển', ' Phiên bản thử nghiệm');
+
+--
 -- Indexes for dumped tables
 --
 
@@ -337,6 +406,18 @@ ALTER TABLE `distance`
 -- Indexes for table `exercise`
 --
 ALTER TABLE `exercise`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `lesson`
+--
+ALTER TABLE `lesson`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `lesson_exercise`
+--
+ALTER TABLE `lesson_exercise`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -424,7 +505,19 @@ ALTER TABLE `distance`
 -- AUTO_INCREMENT for table `exercise`
 --
 ALTER TABLE `exercise`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+
+--
+-- AUTO_INCREMENT for table `lesson`
+--
+ALTER TABLE `lesson`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `lesson_exercise`
+--
+ALTER TABLE `lesson_exercise`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `record`
@@ -442,7 +535,7 @@ ALTER TABLE `role`
 -- AUTO_INCREMENT for table `schedule`
 --
 ALTER TABLE `schedule`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `style`
@@ -454,7 +547,7 @@ ALTER TABLE `style`
 -- AUTO_INCREMENT for table `team`
 --
 ALTER TABLE `team`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `team-swimmer`
@@ -472,13 +565,13 @@ ALTER TABLE `type_of_exercise`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `version`
 --
 ALTER TABLE `version`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
