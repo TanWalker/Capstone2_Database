@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 18, 2019 at 09:44 AM
+-- Generation Time: Mar 19, 2019 at 02:30 AM
 -- Server version: 10.1.38-MariaDB
 -- PHP Version: 7.3.2
 
@@ -150,7 +150,9 @@ CREATE TABLE `record` (
   `note` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `best_result` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `errors` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `coach_id` int(11) DEFAULT NULL
+  `coach_id` int(11) DEFAULT NULL,
+  `exercise_id` int(11) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -196,13 +198,6 @@ CREATE TABLE `schedule` (
   `team_id` int(11) DEFAULT NULL,
   `exercise_name` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `schedule`
---
-
-INSERT INTO `schedule` (`id`, `start_hour`, `end_hour`, `exercise_id`, `coach_id`, `day`, `month`, `year`, `start_minute`, `end_minute`, `team_name`, `time_start`, `time_end`, `team_id`, `exercise_name`) VALUES
-(1, 8, 9, 11, 5, 19, 3, 2019, 0, 0, 'Eddy', '2019-03-19 01:00:00', '2019-03-19 02:00:00', 1, 'Khởi động nhẹ');
 
 -- --------------------------------------------------------
 
