@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 19, 2019 at 02:30 AM
+-- Generation Time: Mar 19, 2019 at 02:46 AM
 -- Server version: 10.1.38-MariaDB
 -- PHP Version: 7.3.2
 
@@ -95,10 +95,7 @@ CREATE TABLE `exercise` (
 --
 
 INSERT INTO `exercise` (`id`, `name`, `style`, `distance`, `reps`, `coach_id`, `time`, `description`, `type_id`) VALUES
-(10, 'Khởi động nhẹ', 'Bơi ếch', 300, 5, 5, 30, 'abc-xyz', 1),
-(11, 'Main stroke 1', 'Bơi chó', 180, 10, 5, 30, 'Bơi gì gì đó', 2),
-(12, 'Final set 1', 'Bơi lượn sóng', 250, 10, 5, 10, 'bơi lượn sóng 1', 3),
-(13, 'tập thở', 'Bơi bướm', 250, 10, 5, 10, 'abcxyz', 4);
+(14, 'khởi động nhẹ', 'Bơi ếch', 1500, 100, 5, 90, 'khởi động max nhẹ', 1);
 
 -- --------------------------------------------------------
 
@@ -150,9 +147,9 @@ CREATE TABLE `record` (
   `note` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `best_result` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `errors` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `coach_id` int(11) DEFAULT NULL,
-  `exercise_id` int(11) DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  `coach_id` int(11) NOT NULL,
+  `exercise_id` int(11) NOT NULL,
+  `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -500,7 +497,7 @@ ALTER TABLE `distance`
 -- AUTO_INCREMENT for table `exercise`
 --
 ALTER TABLE `exercise`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `lesson`
