@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 19, 2019 at 02:46 AM
+-- Generation Time: Mar 20, 2019 at 04:52 AM
 -- Server version: 10.1.38-MariaDB
 -- PHP Version: 7.3.2
 
@@ -95,7 +95,11 @@ CREATE TABLE `exercise` (
 --
 
 INSERT INTO `exercise` (`id`, `name`, `style`, `distance`, `reps`, `coach_id`, `time`, `description`, `type_id`) VALUES
-(14, 'khởi động nhẹ', 'Bơi ếch', 1500, 100, 5, 90, 'khởi động max nhẹ', 1);
+(14, 'khởi động nhẹ', 'Bơi ếch', 1500, 100, 5, 90, 'khởi động max nhẹ', 1),
+(15, 'khởi động nặng', 'Bơi ngửa', 150, 10, 5, 10, 'bơi khởi động cực mạnh', 1),
+(16, 'Bơi nhẹ nhàng', 'Bơi ngửa', 150, 10, 5, 10, 'bơi nhẹ thôi', 2),
+(17, 'bơi mạnh', 'Bơi bướm', 150, 10, 5, 30, 'bơi full 100% công lực', 3),
+(18, 'Thở nhẹ', 'Bơi bướm', 150, 10, 5, 10, 'thở nhẹ nhàng', 4);
 
 -- --------------------------------------------------------
 
@@ -108,6 +112,15 @@ CREATE TABLE `lesson` (
   `coach_id` int(11) DEFAULT NULL,
   `name` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `lesson`
+--
+
+INSERT INTO `lesson` (`id`, `coach_id`, `name`) VALUES
+(1, 5, ' Khởi đầu ngày mới'),
+(2, 5, ' Khởi đầu ngày cũ'),
+(3, 5, ' Khởi đầu ngày mới 2');
 
 -- --------------------------------------------------------
 
@@ -123,6 +136,27 @@ CREATE TABLE `lesson_exercise` (
   `is_important` bit(1) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `monthly_record`
+--
+
+CREATE TABLE `monthly_record` (
+  `id` int(11) NOT NULL,
+  `exercise_id` int(11) DEFAULT NULL,
+  `avg_min_hr` double DEFAULT NULL,
+  `avg_max_hr` double DEFAULT NULL,
+  `avg_min_time` double DEFAULT NULL,
+  `avg_max_time` double DEFAULT NULL,
+  `avg_hr` double DEFAULT NULL,
+  `avg_time` double DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `coach_id` int(11) DEFAULT NULL,
+  `feed_back` text,
+  `type` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -149,7 +183,8 @@ CREATE TABLE `record` (
   `errors` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `coach_id` int(11) NOT NULL,
   `exercise_id` int(11) NOT NULL,
-  `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `updatedAt` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -180,20 +215,20 @@ INSERT INTO `role` (`id`, `name`) VALUES
 
 CREATE TABLE `schedule` (
   `id` int(11) NOT NULL,
-  `start_hour` int(11) DEFAULT NULL,
-  `end_hour` int(11) DEFAULT NULL,
-  `exercise_id` int(11) DEFAULT NULL,
   `coach_id` int(11) DEFAULT NULL,
+  `team_name` varchar(255) DEFAULT NULL,
+  `team_id` int(11) DEFAULT NULL,
+  `lesson_id` int(11) DEFAULT NULL,
+  `lesson_name` varchar(255) DEFAULT NULL,
   `day` int(11) DEFAULT NULL,
   `month` int(11) DEFAULT NULL,
   `year` int(11) DEFAULT NULL,
+  `start_hour` int(11) DEFAULT NULL,
   `start_minute` int(11) DEFAULT NULL,
+  `end_hour` int(11) DEFAULT NULL,
   `end_minute` int(11) DEFAULT NULL,
-  `team_name` varchar(255) DEFAULT NULL,
   `time_start` datetime DEFAULT NULL,
-  `time_end` datetime DEFAULT NULL,
-  `team_id` int(11) DEFAULT NULL,
-  `exercise_name` varchar(255) DEFAULT NULL
+  `time_end` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -319,7 +354,7 @@ CREATE TABLE `user` (
 INSERT INTO `user` (`id`, `role_id`, `username`, `password`, `first_name`, `last_name`, `dob`, `phone`, `email`, `address`, `parent_name`, `parent_phone`, `gender`, `is_verified`, `age`, `height`, `weight`, `avatar`, `slug`, `created_at`, `updated_at`, `team_id`, `is_coach`, `display_name`, `bmi`, `endurance`, `speed`) VALUES
 (3, 2, 'ocean', '$2b$10$qzcbh0CMK2z8lvmtvh5H7Oir75HHjHntUftKMtDMEiMsRmKogJ9xe', 'Dương', 'Lê Đại', '1997-08-23 00:00:00', '0121549693', 'ocean@enclave.vn', NULL, NULL, NULL, 0, 1, NULL, 175, 80, 'https://ucarecdn.com/1c922eab-4545-4570-a580-db6fed2009e5/', NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', NULL, 0, NULL, NULL, NULL, NULL),
 (4, 2, 'walker', '$2b$10$yH9taDp2wl47An8Ce9tIDuZ4g5ZjfG.Fo.1d6jfltxyAm8PRXs2KS', 'Tan', 'Ho', '1997-02-21 14:00:00', NULL, 'walker@enclave.vn', NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', NULL, 0, NULL, NULL, NULL, NULL),
-(5, 2, 'eddy', '$2a$10$AUZfXSH92y/rh7/ZfftnQ.mWDpYlZjI3v4isNnGZgIBPj/PPQ0y4S', 'Ánh', 'Nguyễn Đắc', '1997-10-19 00:00:00', '0932549693', 'eddy@enclave.vn', NULL, NULL, NULL, 0, 1, NULL, 178, 65, 'https://ucarecdn.com/657fdc37-8193-4616-b195-ddaa7c95d70c/', NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', NULL, 0, 'Nguyễn Đắc Ánh', NULL, NULL, NULL),
+(5, 2, 'eddy', '$2a$10$AUZfXSH92y/rh7/ZfftnQ.mWDpYlZjI3v4isNnGZgIBPj/PPQ0y4S', 'Ánh', 'Nguyễn Đắc', '1997-11-18 00:00:00', '0932549693', 'eddy@enclave.vn', NULL, NULL, NULL, 0, 1, NULL, 174, 67, 'https://ucarecdn.com/657fdc37-8193-4616-b195-ddaa7c95d70c/', NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', NULL, 0, 'Nguyễn Đắc Ánh', 22.1297, NULL, NULL),
 (8, 2, 'triton', '$2b$10$f0nI.KebYOJHszSF1a1oTuxsJyoihoNuI8AJVwaK.k3AF91PuPopW', 'Tri', 'Nguyen', '2019-03-14 01:50:38', '2', 'triton@enclave.vn', NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', NULL, 0, 'Nguyen Tri', NULL, NULL, NULL),
 (9, 2, 'kaizer', '$2b$10$y8xIjnyO5y1WFCObR3e4IuXdwaSutW8DOT66HWsQwHmcHVmk8JR2W', 'Khoa', 'Phạm', '1997-08-15 00:00:00', '0123456', 'kaizer@enclave.vn', NULL, NULL, NULL, 0, 1, NULL, 170, 67, 'https://ucarecdn.com/bd0f2fed-2f50-462c-adc6-0b5bac345cf9/', NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', NULL, 0, NULL, NULL, NULL, NULL),
 (10, 3, 'QK5DN_10', '$2b$10$02jrJHaHont/aaglrF.P5.aKXvSg4S1a5jh/IetC9UQoA1wxaHnXi', NULL, NULL, '2019-03-18 07:20:36', NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, NULL, NULL, NULL, NULL),
@@ -347,6 +382,8 @@ DELIMITER ;
 DELIMITER $$
 CREATE TRIGGER `before_update_user` BEFORE UPDATE ON `user` FOR EACH ROW BEGIN
    set NEW.display_name =  CONCAT(NEW.last_name, " ",NEW.first_name) ;
+   set NEW.bmi = NEW.weight / ( NEW.height * NEW.height * 0.0001);
+
 END
 $$
 DELIMITER ;
@@ -410,6 +447,12 @@ ALTER TABLE `lesson`
 -- Indexes for table `lesson_exercise`
 --
 ALTER TABLE `lesson_exercise`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `monthly_record`
+--
+ALTER TABLE `monthly_record`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -497,18 +540,24 @@ ALTER TABLE `distance`
 -- AUTO_INCREMENT for table `exercise`
 --
 ALTER TABLE `exercise`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `lesson`
 --
 ALTER TABLE `lesson`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `lesson_exercise`
 --
 ALTER TABLE `lesson_exercise`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `monthly_record`
+--
+ALTER TABLE `monthly_record`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
@@ -569,4 +618,3 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-ALTER TABLE `record` ADD `updatedAt` timestamp;
