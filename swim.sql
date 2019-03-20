@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 20, 2019 at 04:52 AM
+-- Generation Time: Mar 20, 2019 at 04:59 AM
 -- Server version: 10.1.38-MariaDB
 -- PHP Version: 7.3.2
 
@@ -133,7 +133,7 @@ CREATE TABLE `lesson_exercise` (
   `lesson_id` int(11) DEFAULT NULL,
   `exercise_id` int(11) DEFAULT NULL,
   `type_of_exercise_id` int(11) DEFAULT NULL,
-  `is_important` bit(1) DEFAULT NULL,
+  `is_important` tinyint(1) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
