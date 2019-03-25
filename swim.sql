@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 20, 2019 at 04:59 AM
+-- Generation Time: Mar 25, 2019 at 08:13 AM
 -- Server version: 10.1.38-MariaDB
 -- PHP Version: 7.3.2
 
@@ -22,6 +22,17 @@ SET time_zone = "+00:00";
 -- Database: `swim`
 --
 
+DELIMITER $$
+--
+-- Procedures
+--
+CREATE DEFINER=`` PROCEDURE `getBMI_tips` (IN `mbi` INT(6))  BEGIN
+ SELECT status as myStatus FROM bmi_index WHERE mbi >= min_BMI AND mbi <= max_BMI;
+
+END$$
+
+DELIMITER ;
+
 -- --------------------------------------------------------
 
 --
@@ -30,8 +41,35 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `age` (
   `id` int(11) NOT NULL,
-  `age_range` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL
+  `age_range` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `max_BMI` float DEFAULT NULL,
+  `max_speed` float DEFAULT NULL,
+  `max_endurance` float DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `bmi_index`
+--
+
+CREATE TABLE `bmi_index` (
+  `id` int(11) NOT NULL,
+  `min_BMI` float DEFAULT NULL,
+  `max_BMI` float DEFAULT NULL,
+  `tips` text,
+  `status` text
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `bmi_index`
+--
+
+INSERT INTO `bmi_index` (`id`, `min_BMI`, `max_BMI`, `tips`, `status`) VALUES
+(1, 0, 5, ' ', 'Thiếu cân'),
+(2, 6, 85, ' ', 'Sức khỏe dinh dưỡng tốt'),
+(3, 86, 95, ' ', 'Thừa cân'),
+(4, 95, 1000, ' ', 'Béo phì');
 
 -- --------------------------------------------------------
 
@@ -120,7 +158,10 @@ CREATE TABLE `lesson` (
 INSERT INTO `lesson` (`id`, `coach_id`, `name`) VALUES
 (1, 5, ' Khởi đầu ngày mới'),
 (2, 5, ' Khởi đầu ngày cũ'),
-(3, 5, ' Khởi đầu ngày mới 2');
+(3, 5, ' Khởi đầu ngày mới 2'),
+(4, 5, 'eddyenclave'),
+(5, 5, 'eddyenclave3'),
+(6, 5, 'Giáo án 01');
 
 -- --------------------------------------------------------
 
@@ -137,6 +178,21 @@ CREATE TABLE `lesson_exercise` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `lesson_exercise`
+--
+
+INSERT INTO `lesson_exercise` (`id`, `lesson_id`, `exercise_id`, `type_of_exercise_id`, `is_important`, `created_at`, `updated_at`) VALUES
+(1, 5, 14, 1, 0, '2019-03-20 06:12:23', '0000-00-00 00:00:00'),
+(2, 5, 15, 1, 0, '2019-03-20 06:12:23', '0000-00-00 00:00:00'),
+(3, 5, 17, 3, 0, '2019-03-20 06:12:23', '0000-00-00 00:00:00'),
+(4, 5, 18, 4, 0, '2019-03-20 06:12:23', '0000-00-00 00:00:00'),
+(5, 5, 16, 2, 0, '2019-03-20 06:12:23', '0000-00-00 00:00:00'),
+(6, 6, 14, 1, 0, '2019-03-25 04:35:07', '0000-00-00 00:00:00'),
+(7, 6, 16, 2, 0, '2019-03-25 04:35:07', '0000-00-00 00:00:00'),
+(8, 6, 17, 3, 0, '2019-03-25 04:35:07', '0000-00-00 00:00:00'),
+(9, 6, 18, 4, 0, '2019-03-25 04:35:07', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -187,6 +243,13 @@ CREATE TABLE `record` (
   `updatedAt` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+--
+-- Dumping data for table `record`
+--
+
+INSERT INTO `record` (`id`, `user_id`, `date_id`, `schedule_id`, `min_time`, `max_time`, `min_hr`, `max_hr`, `heart_rate`, `attitude`, `time_swim`, `result`, `note`, `best_result`, `errors`, `coach_id`, `exercise_id`, `createdAt`, `updatedAt`) VALUES
+(1, 10, 0, 2, 12, 16, 60, 80, 65, ' khá tốt ', 14, 'good', ' aaaaaannnnnncccccccc', '', 'thực hiện lỗi', 5, 14, '2019-03-21 02:31:45', '2019-03-21 02:31:45');
+
 -- --------------------------------------------------------
 
 --
@@ -228,8 +291,18 @@ CREATE TABLE `schedule` (
   `end_hour` int(11) DEFAULT NULL,
   `end_minute` int(11) DEFAULT NULL,
   `time_start` datetime DEFAULT NULL,
-  `time_end` datetime DEFAULT NULL
+  `time_end` datetime DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `schedule`
+--
+
+INSERT INTO `schedule` (`id`, `coach_id`, `team_name`, `team_id`, `lesson_id`, `lesson_name`, `day`, `month`, `year`, `start_hour`, `start_minute`, `end_hour`, `end_minute`, `time_start`, `time_end`, `created_at`, `updated_at`) VALUES
+(2, 5, 'Eddy', 1, 1, ' Khởi đầu ngày mới', 20, 3, 2019, 8, 0, 9, 0, '2019-03-20 01:00:00', '2019-03-20 02:00:00', '2019-03-25 06:27:42', '0000-00-00 00:00:00'),
+(3, 5, 'Eddy', 1, 1, ' Khởi đầu ngày mới', 21, 3, 2019, 7, 0, 12, 0, '2019-03-21 00:00:00', '2019-03-21 05:00:00', '2019-03-25 06:27:42', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -266,15 +339,18 @@ CREATE TABLE `team` (
   `id` int(11) NOT NULL,
   `coach_id` int(11) DEFAULT NULL,
   `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `age` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL
+  `age` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `team`
 --
 
-INSERT INTO `team` (`id`, `coach_id`, `name`, `age`) VALUES
-(1, 5, 'Eddy', '15');
+INSERT INTO `team` (`id`, `coach_id`, `name`, `age`, `created_at`, `updated_at`) VALUES
+(1, 5, 'Eddy', '15', '2019-03-25 04:22:38', '0000-00-00 00:00:00'),
+(2, 5, 'eddy2', '12', '2019-03-25 04:22:38', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -285,7 +361,9 @@ INSERT INTO `team` (`id`, `coach_id`, `name`, `age`) VALUES
 CREATE TABLE `team-swimmer` (
   `id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
-  `team_id` int(11) NOT NULL
+  `team_id` int(11) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -325,11 +403,11 @@ CREATE TABLE `user` (
   `first_name` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL,
   `last_name` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL,
   `dob` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `phone` char(10) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `phone` char(20) COLLATE utf8_unicode_ci DEFAULT NULL,
   `email` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL,
   `address` varchar(225) COLLATE utf8_unicode_ci DEFAULT NULL,
   `parent_name` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `parent_phone` char(10) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `parent_phone` char(20) COLLATE utf8_unicode_ci DEFAULT NULL,
   `gender` tinyint(1) DEFAULT '0',
   `is_verified` tinyint(1) DEFAULT '0',
   `age` int(1) DEFAULT NULL,
@@ -366,7 +444,13 @@ INSERT INTO `user` (`id`, `role_id`, `username`, `password`, `first_name`, `last
 (16, 3, 'QK5DN_15', '$2b$10$T6DkWRee.oiLK3Iipd9bUe2GF7AR/MNmrUQVeGky8s8tFMce2zIoG', NULL, NULL, '2019-03-18 07:20:36', NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, NULL, NULL, NULL, NULL),
 (17, 3, 'QK5DN_17', '$2b$10$rW5.n8XwAi3meNPC5vexQO2eCbIUCycm5SeJKnR8KIRvQzF86WJ5i', NULL, NULL, '2019-03-18 07:20:36', NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, NULL, NULL, NULL, NULL),
 (18, 3, 'QK5DN_19', '$2b$10$acTJTkmli4nE8P8HZTkuxewfiuQ2xSq3OY2dw1iILHcGrLp3kepBm', NULL, NULL, '2019-03-18 07:20:36', NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, NULL, NULL, NULL, NULL),
-(19, 3, 'QK5DN_18', '$2b$10$hO66A.t3vEdX/DMkUYScqO1gdwlvgC3hFpnU2kWlFPQfk7J6WICpS', NULL, NULL, '2019-03-18 07:20:36', NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, NULL, NULL, NULL, NULL);
+(19, 3, 'QK5DN_18', '$2b$10$hO66A.t3vEdX/DMkUYScqO1gdwlvgC3hFpnU2kWlFPQfk7J6WICpS', NULL, NULL, '2019-03-18 07:20:36', NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, NULL, NULL, NULL, NULL),
+(20, 3, 'QK5DN_21', '$2b$10$3UfRbss0bItxk4q7DpInCuian.U1WT3DxNMsMJose8qpxpmnpc97C', NULL, NULL, '2019-03-21 01:49:44', NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 2, 0, NULL, NULL, NULL, NULL),
+(21, 3, 'QK5DN_20', '$2b$10$wWIXpAhiX/Zvs09KL46Znu0oA4wtn6k5J4heFK8jbhnnHUc90eXRy', NULL, NULL, '2019-03-21 01:49:44', NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 2, 0, NULL, NULL, NULL, NULL),
+(22, 3, 'QK5DN_22', '$2b$10$tgPXSFTqfN.42OZIsN2ATeyTUQe1hyzCQgTlTa5uEXEeI5UH8OaZe', NULL, NULL, '2019-03-21 01:49:44', NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 2, 0, NULL, NULL, NULL, NULL),
+(23, 3, 'QK5DN_23', '$2b$10$DSQu9UwRUdw8IB5UzofQ2OhfRlHswzYr7vic0NCemhe2TR6hUTXka', NULL, NULL, '2019-03-21 01:49:44', NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 2, 0, NULL, NULL, NULL, NULL),
+(24, 3, 'QK5DN_25', '$2b$10$dLY4lj6VEslggPb.l1ZPuuSQkzCa6RXB7WiMcsuoFIiQxuzxTLIHu', NULL, NULL, '2019-03-21 01:49:44', NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 2, 0, NULL, NULL, NULL, NULL),
+(25, 3, 'QK5DN_24', '$2b$10$Zxywqa6fN8rN7teW0rRrNe1HNwV/jQamjcZ2SUlF0OK.UmSTFCxIC', NULL, NULL, '2019-03-21 01:49:44', NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 2, 0, NULL, NULL, NULL, NULL);
 
 --
 -- Triggers `user`
@@ -417,6 +501,12 @@ INSERT INTO `version` (`id`, `front_version`, `back_version`, `description`, `na
 -- Indexes for table `age`
 --
 ALTER TABLE `age`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `bmi_index`
+--
+ALTER TABLE `bmi_index`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -525,6 +615,12 @@ ALTER TABLE `age`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `bmi_index`
+--
+ALTER TABLE `bmi_index`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
 -- AUTO_INCREMENT for table `date`
 --
 ALTER TABLE `date`
@@ -546,13 +642,13 @@ ALTER TABLE `exercise`
 -- AUTO_INCREMENT for table `lesson`
 --
 ALTER TABLE `lesson`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `lesson_exercise`
 --
 ALTER TABLE `lesson_exercise`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `monthly_record`
@@ -564,7 +660,7 @@ ALTER TABLE `monthly_record`
 -- AUTO_INCREMENT for table `record`
 --
 ALTER TABLE `record`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `role`
@@ -576,7 +672,7 @@ ALTER TABLE `role`
 -- AUTO_INCREMENT for table `schedule`
 --
 ALTER TABLE `schedule`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `style`
@@ -588,7 +684,7 @@ ALTER TABLE `style`
 -- AUTO_INCREMENT for table `team`
 --
 ALTER TABLE `team`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `team-swimmer`
@@ -606,7 +702,7 @@ ALTER TABLE `type_of_exercise`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT for table `version`
