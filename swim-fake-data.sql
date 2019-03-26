@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 25, 2019 at 08:15 AM
+-- Generation Time: Mar 26, 2019 at 05:24 AM
 -- Server version: 10.1.38-MariaDB
 -- PHP Version: 7.3.2
 
@@ -26,6 +26,40 @@ DELIMITER $$
 --
 -- Procedures
 --
+CREATE DEFINER=`` PROCEDURE `auto_insert_monthly_report_proc` (IN `my_month` INT, IN `my_year` INT, IN `my_user_id` INT)  BEGIN
+
+ 
+INSERT INTO `monthly_record` ( month , year, user_id, coach_id , exercise_id, avg_time , avg_min_hr ,avg_max_hr ,avg_min_time,avg_max_time ,avg_hr  )
+SELECT
+my_month,
+my_year,
+`record`.user_id,
+`record`.coach_id,
+`record`.exercise_id, 
+AVG( `record`.`time_swim`),
+AVG( `record`.`min_hr`), 
+AVG( `record`.`max_hr`), 
+AVG( `record`.`min_time`),
+AVG( `record`.`max_time`), 
+AVG( `record`.`heart_rate`)
+FROM `record` WHERE user_id = my_user_id GROUP BY exercise_id;
+
+
+END$$
+
+CREATE DEFINER=`` PROCEDURE `auto_tool_report_proc` (IN `month` INT, IN `year` INT, IN `user_id` INT)  BEGIN
+
+  SELECT record.id , record.user_id , record.heart_rate ,record.time_swim , record.attitude , record.result , record.note ,record.best_result , record.errors , record.exercise_id ,
+  
+  `schedule`.`day` ,`schedule`.`month` , `schedule`.`year`
+  FROM `record`, `schedule` 
+   WHERE `record`.`schedule_id` = `schedule`.`id`
+     AND  `schedule`.month = month
+     AND `schedule`.year = year
+     AND `record`.`user_id` = user_id;
+
+END$$
+
 CREATE DEFINER=`` PROCEDURE `getBMI_tips` (IN `mbi` INT(6))  BEGIN
  SELECT status as myStatus FROM bmi_index WHERE mbi >= min_BMI AND mbi <= max_BMI;
 
@@ -190,8 +224,25 @@ CREATE TABLE `monthly_record` (
   `user_id` int(11) DEFAULT NULL,
   `coach_id` int(11) DEFAULT NULL,
   `feed_back` text,
-  `type` varchar(255) DEFAULT NULL
+  `type` varchar(255) DEFAULT NULL,
+  `month` int(11) DEFAULT NULL,
+  `year` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `monthly_record`
+--
+
+INSERT INTO `monthly_record` (`id`, `exercise_id`, `avg_min_hr`, `avg_max_hr`, `avg_min_time`, `avg_max_time`, `avg_hr`, `avg_time`, `user_id`, `coach_id`, `feed_back`, `type`, `month`, `year`) VALUES
+(30, 19, 54, 87, 159, 285, 78, 390, 32, 2, NULL, NULL, 3, 2019),
+(31, 20, 56.5, 85.5, 141, 130.5, 68.5, 88.5, 32, 4, NULL, NULL, 3, 2019),
+(32, 22, 56.333333333, 82.666666666, 308.333333333, 386.5, 75.666666666, 346, 32, 2, NULL, NULL, 3, 2019),
+(33, 23, 54.333333333, 81.666666666, 351, 315, 68, 361.3333333333333, 32, 4, NULL, NULL, 3, 2019),
+(34, 24, 55.333333333, 82, 391.666666666, 214, 76, 100.33333333333333, 32, 2, NULL, NULL, 3, 2019),
+(35, 25, 55.5, 80, 182, 224.5, 81.5, 305, 32, 3, NULL, NULL, 3, 2019),
+(36, 26, 52.666666666, 80.333333333, 293, 271.333333333, 76.666666666, 341.3333333333333, 32, 3, NULL, NULL, 3, 2019),
+(37, 27, 57.166666666, 81.333333333, 313.333333333, 310.5, 75.333333333, 419.3333333333333, 32, 4, NULL, NULL, 3, 2019),
+(38, 28, 55.5, 83, 258, 264, 67.5, 310.5, 32, 4, NULL, NULL, 3, 2019);
 
 -- --------------------------------------------------------
 
@@ -3718,7 +3769,7 @@ ALTER TABLE `lesson_exercise`
 -- AUTO_INCREMENT for table `monthly_record`
 --
 ALTER TABLE `monthly_record`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
 
 --
 -- AUTO_INCREMENT for table `record`

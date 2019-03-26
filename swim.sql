@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 25, 2019 at 08:13 AM
+-- Generation Time: Mar 26, 2019 at 05:23 AM
 -- Server version: 10.1.38-MariaDB
 -- PHP Version: 7.3.2
 
@@ -26,6 +26,27 @@ DELIMITER $$
 --
 -- Procedures
 --
+CREATE DEFINER=`` PROCEDURE `auto_insert_monthly_report_proc` (IN `my_month` INT, IN `my_year` INT, IN `my_user_id` INT)  BEGIN
+
+ 
+INSERT INTO `monthly_record` ( month , year, user_id, coach_id , exercise_id, avg_time , avg_min_hr ,avg_max_hr ,avg_min_time,avg_max_time ,avg_hr  )
+SELECT
+my_month,
+my_year,
+`record`.user_id,
+`record`.coach_id,
+`record`.exercise_id, 
+AVG( `record`.`time_swim`),
+AVG( `record`.`min_hr`), 
+AVG( `record`.`max_hr`), 
+AVG( `record`.`min_time`),
+AVG( `record`.`max_time`), 
+AVG( `record`.`heart_rate`)
+FROM `record` WHERE user_id = my_user_id GROUP BY exercise_id;
+
+
+END$$
+
 CREATE DEFINER=`` PROCEDURE `getBMI_tips` (IN `mbi` INT(6))  BEGIN
  SELECT status as myStatus FROM bmi_index WHERE mbi >= min_BMI AND mbi <= max_BMI;
 
@@ -212,7 +233,9 @@ CREATE TABLE `monthly_record` (
   `user_id` int(11) DEFAULT NULL,
   `coach_id` int(11) DEFAULT NULL,
   `feed_back` text,
-  `type` varchar(255) DEFAULT NULL
+  `type` varchar(255) DEFAULT NULL,
+  `month` int(11) DEFAULT NULL,
+  `year` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
