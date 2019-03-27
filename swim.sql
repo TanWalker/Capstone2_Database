@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 26, 2019 at 05:23 AM
+-- Generation Time: Mar 27, 2019 at 02:57 AM
 -- Server version: 10.1.38-MariaDB
 -- PHP Version: 7.3.2
 
@@ -44,6 +44,18 @@ AVG( `record`.`max_time`),
 AVG( `record`.`heart_rate`)
 FROM `record` WHERE user_id = my_user_id GROUP BY exercise_id;
 
+
+END$$
+
+CREATE DEFINER=`` PROCEDURE `auto_tool_report_proc` (IN `month` INT, IN `year` INT, IN `user_id` INT)  BEGIN
+
+  SELECT record.id , record.user_id , record.heart_rate ,record.time_swim , record.attitude , record.result , record.note ,record.best_result , record.errors , record.exercise_id , `schedule`.`day` ,`schedule`.`month` , `schedule`.`year`,
+  `exercise`.`name` , `exercise`.`distance`
+  FROM `record`, `schedule`, `exercise`
+   WHERE `record`.`schedule_id` = `schedule`.`id` AND `record`.`exercise_id` = `exercise`.`id`
+     AND  `schedule`.month = month
+     AND `schedule`.year = year
+     AND `record`.`user_id` = user_id;
 
 END$$
 
