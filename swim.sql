@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 27, 2019 at 02:57 AM
+-- Generation Time: Apr 03, 2019 at 04:07 AM
 -- Server version: 10.1.38-MariaDB
 -- PHP Version: 7.3.2
 
@@ -115,7 +115,8 @@ CREATE TABLE `date` (
   `year` int(11) DEFAULT NULL,
   `quarter` int(11) DEFAULT NULL,
   `month` int(11) DEFAULT NULL,
-  `day` int(11) DEFAULT NULL
+  `day` int(11) DEFAULT NULL,
+  `schedule_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -259,7 +260,6 @@ CREATE TABLE `monthly_record` (
 CREATE TABLE `record` (
   `id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
-  `date_id` int(11) NOT NULL,
   `schedule_id` int(11) NOT NULL,
   `min_time` int(11) NOT NULL,
   `max_time` int(11) NOT NULL,
@@ -282,8 +282,8 @@ CREATE TABLE `record` (
 -- Dumping data for table `record`
 --
 
-INSERT INTO `record` (`id`, `user_id`, `date_id`, `schedule_id`, `min_time`, `max_time`, `min_hr`, `max_hr`, `heart_rate`, `attitude`, `time_swim`, `result`, `note`, `best_result`, `errors`, `coach_id`, `exercise_id`, `createdAt`, `updatedAt`) VALUES
-(1, 10, 0, 2, 12, 16, 60, 80, 65, ' khá tốt ', 14, 'good', ' aaaaaannnnnncccccccc', '', 'thực hiện lỗi', 5, 14, '2019-03-21 02:31:45', '2019-03-21 02:31:45');
+INSERT INTO `record` (`id`, `user_id`, `schedule_id`, `min_time`, `max_time`, `min_hr`, `max_hr`, `heart_rate`, `attitude`, `time_swim`, `result`, `note`, `best_result`, `errors`, `coach_id`, `exercise_id`, `createdAt`, `updatedAt`) VALUES
+(1, 10, 2, 12, 16, 60, 80, 65, ' khá tốt ', 14, 'good', ' aaaaaannnnnncccccccc', '', 'thực hiện lỗi', 5, 14, '2019-03-21 02:31:45', '2019-03-21 02:31:45');
 
 -- --------------------------------------------------------
 
@@ -338,6 +338,18 @@ CREATE TABLE `schedule` (
 INSERT INTO `schedule` (`id`, `coach_id`, `team_name`, `team_id`, `lesson_id`, `lesson_name`, `day`, `month`, `year`, `start_hour`, `start_minute`, `end_hour`, `end_minute`, `time_start`, `time_end`, `created_at`, `updated_at`) VALUES
 (2, 5, 'Eddy', 1, 1, ' Khởi đầu ngày mới', 20, 3, 2019, 8, 0, 9, 0, '2019-03-20 01:00:00', '2019-03-20 02:00:00', '2019-03-25 06:27:42', '0000-00-00 00:00:00'),
 (3, 5, 'Eddy', 1, 1, ' Khởi đầu ngày mới', 21, 3, 2019, 7, 0, 12, 0, '2019-03-21 00:00:00', '2019-03-21 05:00:00', '2019-03-25 06:27:42', '0000-00-00 00:00:00');
+
+--
+-- Triggers `schedule`
+--
+DELIMITER $$
+CREATE TRIGGER `after_insert_schedule` AFTER INSERT ON `schedule` FOR EACH ROW BEGIN
+
+ INSERT INTO `date` ( day,  month,  year, schedule_id  ) VALUES ( NEW.day, NEW.month,New.year,NEW.id);
+
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -585,7 +597,6 @@ ALTER TABLE `monthly_record`
 --
 ALTER TABLE `record`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `date_id` (`date_id`),
   ADD KEY `user_id` (`user_id`);
 
 --
@@ -745,8 +756,6 @@ ALTER TABLE `user`
 ALTER TABLE `version`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 COMMIT;
-
-
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
