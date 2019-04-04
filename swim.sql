@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 03, 2019 at 04:07 AM
+-- Generation Time: Apr 04, 2019 at 04:57 AM
 -- Server version: 10.1.38-MariaDB
 -- PHP Version: 7.3.2
 
@@ -284,6 +284,29 @@ CREATE TABLE `record` (
 
 INSERT INTO `record` (`id`, `user_id`, `schedule_id`, `min_time`, `max_time`, `min_hr`, `max_hr`, `heart_rate`, `attitude`, `time_swim`, `result`, `note`, `best_result`, `errors`, `coach_id`, `exercise_id`, `createdAt`, `updatedAt`) VALUES
 (1, 10, 2, 12, 16, 60, 80, 65, ' khá tốt ', 14, 'good', ' aaaaaannnnnncccccccc', '', 'thực hiện lỗi', 5, 14, '2019-03-21 02:31:45', '2019-03-21 02:31:45');
+
+--
+-- Triggers `record`
+--
+DELIMITER $$
+CREATE TRIGGER `after_insert_record` AFTER INSERT ON `record` FOR EACH ROW BEGIN
+
+DECLARE avg_hr integer;
+	SET avg_hr = (SELECT AVG(heart_rate) FROM record WHERE 
+user_id=NEW.user_id);
+UPDATE user SET endurance = avg_hr WHERE id = NEW.user_id;
+END
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `after_update_record` AFTER UPDATE ON `record` FOR EACH ROW BEGIN
+
+ DECLARE avg_hr integer;
+	SET avg_hr = (SELECT AVG(heart_rate) FROM record WHERE user_id=NEW.user_id);
+ UPDATE user SET endurance = avg_hr WHERE id = NEW.user_id;
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
