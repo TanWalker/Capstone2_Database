@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 03, 2019 at 04:07 AM
+-- Generation Time: Apr 04, 2019 at 04:57 AM
 -- Server version: 10.1.38-MariaDB
 -- PHP Version: 7.3.2
 
@@ -176,11 +176,11 @@ CREATE TABLE `lesson` (
 --
 
 INSERT INTO `lesson` (`id`, `coach_id`, `name`) VALUES
-(4, 3, 'Giáo án 1'),
 (5, 3, 'Ngày 2'),
 (6, 3, 'Giáo án 3'),
 (7, 2, 'Giáo án 1'),
-(8, 2, 'Giáo án 2');
+(8, 2, 'Giáo án 2'),
+(9, 3, 'a2');
 
 -- --------------------------------------------------------
 
@@ -203,21 +203,21 @@ CREATE TABLE `lesson_exercise` (
 --
 
 INSERT INTO `lesson_exercise` (`id`, `lesson_id`, `exercise_id`, `type_of_exercise_id`, `is_important`, `created_at`, `updated_at`) VALUES
-(1, 4, 19, 1, 0, '2019-03-25 06:05:59', '0000-00-00 00:00:00'),
-(2, 4, 25, 3, 0, '2019-03-25 06:05:59', '0000-00-00 00:00:00'),
-(3, 4, 28, 4, 0, '2019-03-25 06:05:59', '0000-00-00 00:00:00'),
-(4, 4, 22, 2, 0, '2019-03-25 06:05:59', '0000-00-00 00:00:00'),
-(5, 5, 23, 2, 0, '2019-03-25 06:22:40', '0000-00-00 00:00:00'),
-(6, 5, 26, 3, 0, '2019-03-25 06:22:40', '0000-00-00 00:00:00'),
-(7, 5, 28, 4, 0, '2019-03-25 06:22:40', '0000-00-00 00:00:00'),
-(8, 5, 20, 1, 0, '2019-03-25 06:22:40', '0000-00-00 00:00:00'),
 (9, 6, 24, 2, 0, '2019-03-25 06:23:08', '0000-00-00 00:00:00'),
 (10, 6, 27, 3, 0, '2019-03-25 06:23:08', '0000-00-00 00:00:00'),
 (11, 6, 21, 1, 0, '2019-03-25 06:23:08', '0000-00-00 00:00:00'),
 (12, 6, 28, 4, 0, '2019-03-25 06:23:08', '0000-00-00 00:00:00'),
 (13, 7, 19, 1, 0, '2019-04-01 07:21:54', '0000-00-00 00:00:00'),
 (14, 8, 19, 1, 0, '2019-04-01 07:22:06', '0000-00-00 00:00:00'),
-(15, 8, 20, 1, 0, '2019-04-01 07:22:06', '0000-00-00 00:00:00');
+(15, 8, 20, 1, 0, '2019-04-01 07:22:06', '0000-00-00 00:00:00'),
+(16, 9, 20, 1, 0, '2019-04-03 03:00:24', '0000-00-00 00:00:00'),
+(17, 9, 28, 4, 0, '2019-04-03 03:00:24', '0000-00-00 00:00:00'),
+(18, 9, 23, 2, 0, '2019-04-03 03:00:24', '0000-00-00 00:00:00'),
+(19, 9, 26, 3, 0, '2019-04-03 03:00:24', '0000-00-00 00:00:00'),
+(25, 5, 19, 1, 0, '2019-04-04 02:17:24', '0000-00-00 00:00:00'),
+(26, 5, 23, 2, 0, '2019-04-04 02:17:24', '0000-00-00 00:00:00'),
+(27, 5, 26, 3, 0, '2019-04-04 02:17:24', '0000-00-00 00:00:00'),
+(28, 5, 28, 4, 0, '2019-04-04 02:17:24', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -1793,7 +1793,34 @@ INSERT INTO `record` (`id`, `user_id`, `schedule_id`, `min_time`, `max_time`, `m
 (1498, 48, 1498, 226, 441, 52, 84, 50, 'iure', 322, 'aut', 'dolorem', 'perferendis', 'saepe', 2, 25, '2019-03-25 00:12:22', '2019-03-25 00:12:22'),
 (1499, 37, 1499, 345, 369, 56, 85, 81, 'fugit', 257, 'consectetur', 'qui', 'qui', 'provident', 4, 22, '2019-03-25 00:12:22', '2019-03-25 00:12:22'),
 (1500, 42, 1500, 262, 381, 56, 78, 89, 'dolores', 241, 'quia', 'aut', 'corporis', 'sapiente', 5, 25, '2019-03-25 00:12:22', '2019-03-25 00:12:22'),
-(1501, 20, 161, 2, 2, 1, 1, 1, 'asd', 2, 'asd', 'asd', '', 'asd', 3, 26, '2019-04-02 10:28:15', '2019-04-02 10:28:15');
+(1501, 20, 161, 2, 2, 1, 1, 1, 'asd', 2, 'asd', 'asd', '', 'asd', 3, 26, '2019-04-02 10:28:15', '2019-04-02 10:28:15'),
+(1502, 20, 161, 2, 2, 1, 1, 1, 'asd', 2, 'asd', 'asd', '', 'asd', 3, 26, '2019-04-03 02:31:46', '2019-04-03 02:31:46'),
+(1503, 20, 161, 3, 2, 3, 2, 1, '1', 1, '2', '1', '', '3', 3, 26, '2019-04-03 02:31:46', '2019-04-03 02:31:46'),
+(1504, 38, 161, 2, 14, 3, 3, 3, '1', 1, '1', '1', '', '1', 3, 26, '2019-04-03 02:31:46', '2019-04-03 02:31:46'),
+(1505, 44, 161, 1, 1, 2, 3, 4, '1', 4, '1', '1', '', '1', 3, 26, '2019-04-03 02:31:46', '2019-04-03 02:31:46');
+
+--
+-- Triggers `record`
+--
+DELIMITER $$
+CREATE TRIGGER `after_insert_record` AFTER INSERT ON `record` FOR EACH ROW BEGIN
+
+DECLARE avg_hr integer;
+	SET avg_hr = (SELECT AVG(heart_rate) FROM record WHERE 
+user_id=NEW.user_id);
+UPDATE user SET endurance = avg_hr WHERE id = NEW.user_id;
+END
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `after_update_record` AFTER UPDATE ON `record` FOR EACH ROW BEGIN
+
+ DECLARE avg_hr integer;
+	SET avg_hr = (SELECT AVG(heart_rate) FROM record WHERE user_id=NEW.user_id);
+ UPDATE user SET endurance = avg_hr WHERE id = NEW.user_id;
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -3797,13 +3824,13 @@ ALTER TABLE `exercise`
 -- AUTO_INCREMENT for table `lesson`
 --
 ALTER TABLE `lesson`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `lesson_exercise`
 --
 ALTER TABLE `lesson_exercise`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT for table `monthly_record`
@@ -3815,7 +3842,7 @@ ALTER TABLE `monthly_record`
 -- AUTO_INCREMENT for table `record`
 --
 ALTER TABLE `record`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1502;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1506;
 
 --
 -- AUTO_INCREMENT for table `role`
