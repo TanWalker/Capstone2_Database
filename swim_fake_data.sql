@@ -26,7 +26,7 @@ DELIMITER $$
 --
 -- Procedures
 --
-CREATE DEFINER=`` PROCEDURE `auto_insert_monthly_report_proc` (IN `my_month` INT, IN `my_year` INT, IN `my_user_id` INT)  BEGIN
+CREATE  PROCEDURE `auto_insert_monthly_report_proc` (IN `my_month` INT, IN `my_year` INT, IN `my_user_id` INT)  BEGIN
 
  
 INSERT INTO `monthly_record` ( month , year, user_id, coach_id , exercise_id, avg_time , avg_min_hr ,avg_max_hr ,avg_min_time,avg_max_time ,avg_hr  )
@@ -34,7 +34,7 @@ SELECT
 my_month,
 my_year,
 `record`.user_id,
-`record`.coach_id,
+`record`.coach_id, 
 `record`.exercise_id, 
 AVG( `record`.`time_swim`),
 AVG( `record`.`min_hr`), 
@@ -47,7 +47,7 @@ FROM `record` WHERE user_id = my_user_id GROUP BY exercise_id;
 
 END$$
 
-CREATE DEFINER=`` PROCEDURE `auto_tool_report_proc` (IN `month` INT, IN `year` INT, IN `user_id` INT)  BEGIN
+CREATE  PROCEDURE `auto_tool_report_proc` (IN `month` INT, IN `year` INT, IN `user_id` INT)  BEGIN
 
   SELECT record.id , record.user_id , record.heart_rate ,record.time_swim , record.attitude , record.result , record.note ,record.best_result , record.errors , record.exercise_id , `schedule`.`day` ,`schedule`.`month` , `schedule`.`year`,
   `exercise`.`name` , `exercise`.`distance`
@@ -59,7 +59,7 @@ CREATE DEFINER=`` PROCEDURE `auto_tool_report_proc` (IN `month` INT, IN `year` I
 
 END$$
 
-CREATE DEFINER=`` PROCEDURE `getBMI_tips` (IN `mbi` INT(6))  BEGIN
+CREATE  PROCEDURE `getBMI_tips` (IN `mbi` INT(6))  BEGIN
  SELECT status as myStatus FROM bmi_index WHERE mbi >= min_BMI AND mbi <= max_BMI;
 
 END$$
