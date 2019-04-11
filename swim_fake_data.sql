@@ -2,10 +2,10 @@
 -- version 4.8.5
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Generation Time: Apr 11, 2019 at 11:43 AM
--- Server version: 5.7.25-0ubuntu0.18.04.2
--- PHP Version: 7.2.15-0ubuntu0.18.04.2
+-- Host: 127.0.0.1
+-- Generation Time: Apr 04, 2019 at 04:57 AM
+-- Server version: 10.1.38-MariaDB
+-- PHP Version: 7.3.2
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -19,14 +19,14 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `swim_tracker`
+-- Database: `swim_fake_data`
 --
 
 DELIMITER $$
 --
 -- Procedures
 --
-CREATE DEFINER=``@`%` PROCEDURE `auto_insert_monthly_report_proc` (IN `my_month` INT, IN `my_year` INT, IN `my_user_id` INT)  BEGIN
+CREATE DEFINER=`` PROCEDURE `auto_insert_monthly_report_proc` (IN `my_month` INT, IN `my_year` INT, IN `my_user_id` INT)  BEGIN
 
  
 INSERT INTO `monthly_record` ( month , year, user_id, coach_id , exercise_id, avg_time , avg_min_hr ,avg_max_hr ,avg_min_time,avg_max_time ,avg_hr  )
@@ -47,7 +47,7 @@ FROM `record` WHERE user_id = my_user_id GROUP BY exercise_id;
 
 END$$
 
-CREATE DEFINER=``@`%` PROCEDURE `auto_tool_report_proc` (IN `month` INT, IN `year` INT, IN `user_id` INT)  BEGIN
+CREATE DEFINER=`` PROCEDURE `auto_tool_report_proc` (IN `month` INT, IN `year` INT, IN `user_id` INT)  BEGIN
 
   SELECT record.id , record.user_id , record.heart_rate ,record.time_swim , record.attitude , record.result , record.note ,record.best_result , record.errors , record.exercise_id , `schedule`.`day` ,`schedule`.`month` , `schedule`.`year`,
   `exercise`.`name` , `exercise`.`distance`
@@ -59,7 +59,7 @@ CREATE DEFINER=``@`%` PROCEDURE `auto_tool_report_proc` (IN `month` INT, IN `yea
 
 END$$
 
-CREATE DEFINER=``@`%` PROCEDURE `getBMI_tips` (IN `mbi` INT(6))  BEGIN
+CREATE DEFINER=`` PROCEDURE `getBMI_tips` (IN `mbi` INT(6))  BEGIN
  SELECT status as myStatus FROM bmi_index WHERE mbi >= min_BMI AND mbi <= max_BMI;
 
 END$$
@@ -3688,29 +3688,6 @@ CREATE TABLE `version` (
 INSERT INTO `version` (`id`, `front_version`, `back_version`, `description`, `name`) VALUES
 (1, '0.1.6', '0.1.7', ' Hiện đang trong giai đoạn thử nghiệm và phát triển ( fake database)', ' Phiên bản thử nghiệm');
 
--- --------------------------------------------------------
-
---
--- Table structure for table `video_category`
---
-
-CREATE TABLE `video_category` (
-  `id` int(11) NOT NULL,
-  `category_name` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `youtube`
---
-
-CREATE TABLE `youtube` (
-  `id` int(11) NOT NULL,
-  `link` varchar(255) NOT NULL,
-  `category_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
 --
 -- Indexes for dumped tables
 --
@@ -3816,18 +3793,6 @@ ALTER TABLE `version`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `video_category`
---
-ALTER TABLE `video_category`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `youtube`
---
-ALTER TABLE `youtube`
-  ADD PRIMARY KEY (`id`);
-
---
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -3926,18 +3891,6 @@ ALTER TABLE `user`
 --
 ALTER TABLE `version`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
--- AUTO_INCREMENT for table `video_category`
---
-ALTER TABLE `video_category`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `youtube`
---
-ALTER TABLE `youtube`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
